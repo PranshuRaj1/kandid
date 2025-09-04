@@ -5,6 +5,19 @@ import { relations } from 'drizzle-orm';
 export const campaignStatusEnum = pgEnum('campaign_status', ['Draft', 'Active', 'Paused', 'Completed']);
 export const leadStatusEnum = pgEnum('lead_status', ['Pending', 'Contacted', 'Responded', 'Converted']);
 
+
+// users table
+
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 256 }),
+  email: varchar('email', { length: 256 }).notNull().unique(),
+  // Best Practice: Store a hashed password, not the actual password.
+  hashedPassword: text('hashed_password'), 
+  emailVerified: timestamp('email_verified', { mode: 'date' }),
+  image: text('image'),
+});
+
 // leads references compaign table
 
 // compaign table
