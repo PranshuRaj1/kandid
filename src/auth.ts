@@ -1,12 +1,11 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/db";
-import { users } from "@/db/schema";
-import { google as googleProvider } from "better-auth/social-providers";
-import { toNextJsHandler } from "better-auth/next-js";
+import { db } from "@/db/index";
+import * as schema from "@/db/schema"
+import { nextCookies, toNextJsHandler } from "better-auth/next-js";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
+
 
 // Runtime validation for optional Google provider environment variables
 const EnvSchema = z.object({
@@ -20,11 +19,13 @@ if (!ParsedEnv.success) {
   console.warn("Google OAuth env vars missing or invalid. Google provider will be disabled.");
 }
 
+
+
 export const auth = betterAuth({
   // Configure database via Drizzle adapter
-  database: drizzleAdapter(db as unknown as Record<string, unknown>, {
+  database: drizzleAdapter(db, {
     provider: "pg",
-    usePlural: true,
+    schema:schema,
   }),
   // Built-in email/password auth with sane defaults
   emailAndPassword: {
@@ -45,9 +46,12 @@ export const auth = betterAuth({
           google: {
             clientId: ParsedEnv.data.GOOGLE_CLIENT_ID,
             clientSecret: ParsedEnv.data.GOOGLE_CLIENT_SECRET,
+            accessType: "offline", 
+            prompt: "select_account consent",
           },
         }
       : {},
+      plugins: [nextCookies()]
 });
 
 // Next.js route handlers

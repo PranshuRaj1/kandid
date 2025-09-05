@@ -30,16 +30,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       <Sidebar />
 
       <div className="flex-1 flex flex-col relative">
-        <div className="absolute top-4 left-4 z-50">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleSidebar}
-            className="p-2 bg-white border border-gray-200 shadow-sm hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-          >
-            <Menu className="w-4 h-4 text-gray-600 dark:text-gray-300" />
-          </Button>
-        </div>
+        
 
         <main className="flex-1 overflow-auto p-6 pt-16">{children}</main>
       </div>
