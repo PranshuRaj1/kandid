@@ -1,12 +1,12 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Eye, EyeOff } from "lucide-react"
+import { signUp } from "../../server/user" // Your server action
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void
@@ -19,31 +19,29 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null) // State to hold error messages
 
-  const handleRegister = async (e: React.FormEvent) => {
+  // Unified handler for form submission
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError(null) // Reset error on new submission
 
     try {
-      const response = await fetch("/api/auth/sign-up/email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          name: `${firstName} ${lastName}`.trim(),
-        }),
-      })
+      // Await the response from the server action
+      const result = await signUp(email, password, `${firstName} ${lastName}`.trim())
 
-      if (response.ok) {
-        window.location.href = "/dashboard"
+      if (result.success) {
+        // On success, redirect to the home page
+        window.location.href = "/"
       } else {
-        console.error("Registration failed")
+        // On failure, set the error message to display to the user
+        setError(result.message)
       }
-    } catch (error) {
-      console.error("Registration error:", error)
+    } catch (err) {
+      // Catch any unexpected network or server errors
+      setError("An unexpected error occurred. Please try again.")
+      console.error("Registration error:", err)
     } finally {
       setIsLoading(false)
     }
@@ -62,7 +60,11 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
         <p className="text-gray-500 mt-2">Register using your email address.</p>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleRegister} className="space-y-4">
+        {/* Use the new handleSubmit function */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Display error message if it exists */}
+          {error && <p className="text-sm text-red-600">{error}</p>}
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-700">First Name</label>
@@ -92,7 +94,7 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             <label className="text-sm font-medium text-gray-700">Email</label>
             <Input
               type="email"
-              placeholder="bhavya@kandid.ai"
+              placeholder="example@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -121,12 +123,13 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             </div>
           </div>
 
+          {/* This button correctly triggers the form's onSubmit */}
           <Button
             type="submit"
             className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white mt-6"
             disabled={isLoading}
           >
-            Create my account
+            {isLoading ? "Creating account..." : "Create my account"}
           </Button>
         </form>
 
