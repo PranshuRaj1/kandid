@@ -1,11 +1,8 @@
 "use client"
 
 import type React from "react"
-import { Button } from "@/components/ui/button"
-import { Menu } from "lucide-react"
 
 import { Sidebar } from "./sidebar"
-import { useSidebarStore } from "@/lib/store/sidebar-store"
 import { useThemeStore } from "@/lib/store/theme-store"
 import { useEffect } from "react"
 
@@ -14,7 +11,7 @@ interface LayoutWrapperProps {
 }
 
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
-  const { isOpen, toggleSidebar } = useSidebarStore()
+  
   const { isDark } = useThemeStore()
 
   useEffect(() => {
@@ -26,14 +23,15 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
   }, [isDark])
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-900 px-2 py-2 border border-rounded-xl">
+      
       <Sidebar />
 
-      <div className="flex-1 flex flex-col relative">
+      
         
 
-        <main className="flex-1 overflow-auto p-6 pt-16">{children}</main>
-      </div>
+        <main className="flex-1 overflow-auto p-2 ">{children}</main>
+
     </div>
   )
 }

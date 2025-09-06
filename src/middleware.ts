@@ -12,7 +12,7 @@ export default async function middleware(req: NextRequest) {
   const isAuthRoute = nextUrl.pathname === "/login" || nextUrl.pathname === "/register";
 
   if (isAuthRoute && isLoggedIn) {
-    return NextResponse.redirect(new URL("/", nextUrl));
+    return NextResponse.redirect(new URL("/dashboard", nextUrl));
   }
 
   if (!isLoggedIn && !isAuthRoute) {

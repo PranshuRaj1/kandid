@@ -43,9 +43,9 @@ export function CampaignsComponent() {
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white rounded-lg border border-gray-200 p-4 h-1/2">
       {/* Header with dropdown */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between ">
         <h1 className="text-xl font-medium text-gray-900">Campaigns</h1>
 
         <DropdownMenu>

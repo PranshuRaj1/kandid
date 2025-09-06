@@ -17,6 +17,7 @@ import {
   Headphones,
   Moon,
   ChevronDown,
+  ChevronUp
 } from "lucide-react"
 import { useSidebarStore } from "@/lib/store/sidebar-store"
 import { useThemeStore } from "@/lib/store/theme-store"
@@ -28,7 +29,7 @@ export function Sidebar() {
 
   return (
     <div
-      className={`${isOpen ? "w-64" : "w-0"} h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out overflow-hidden`}
+      className={`${isOpen ? "w-64" : "w-0"} h-screen bg-white dark:bg-gray-900 border-r border-gray-200 rounded-xl dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out overflow-hidden`}
     >
       {/* Header */}
       <div className="p-3 border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
@@ -198,11 +199,11 @@ export function Sidebar() {
               <AvatarFallback className="bg-blue-600 text-white text-xs font-medium">BK</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-gray-900 dark:text-white truncate">Bhavya From Kand...</div>
+              <div className="text-sm font-medium text-gray-900 dark:text-white truncate">Bhavya From Kandid</div>
               <div className="text-xs text-gray-500 dark:text-gray-400 truncate">bhavya@kandid.ai</div>
             </div>
           </div>
-          <ChevronDown className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+          <ChevronUp className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
         </div>
       </div>
     </div>
