@@ -12,9 +12,9 @@ const mockCampaigns = [
   { id: 3, name: "Hyugalife 2", status: "Active" as const },
   { id: 4, name: "Honeyveda", status: "Active" as const },
   { id: 5, name: "HempStreet", status: "Active" as const },
-  { id: 6, name: "HealthyHey 2", status: "Active" as const },
-  { id: 7, name: "Summer Sale", status: "Draft" as const },
-  { id: 8, name: "Holiday Campaign", status: "Paused" as const },
+  // { id: 6, name: "HealthyHey 2", status: "Active" as const },
+  // { id: 7, name: "Summer Sale", status: "Draft" as const },
+  // { id: 8, name: "Holiday Campaign", status: "Paused" as const },
 ]
 
 type CampaignStatus = "Draft" | "Active" | "Paused" | "Completed"
@@ -43,7 +43,7 @@ export function CampaignsComponent() {
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4 h-1/2">
+    <div className="bg-white rounded-lg border border-gray-200 p-4 ">
       {/* Header with dropdown */}
       <div className="flex items-center justify-between ">
         <h1 className="text-xl font-medium text-gray-900">Campaigns</h1>
@@ -76,7 +76,7 @@ export function CampaignsComponent() {
       </div>
 
       {/* Campaign list */}
-      <div className="space-y-4">
+      <div className="space-y-1 mt-4 max-h-72 ">
         {filteredCampaigns.map((campaign) => (
           <div
             key={campaign.id}

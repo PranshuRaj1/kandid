@@ -68,26 +68,26 @@ const mockActivities = [
     campaign: "Digi Sidekick",
     status: { type: "pending", text: "Pending Approval" },
   },
-  {
-    id: 7,
-    lead: {
-      name: "Utkarsh K.",
-      title: "Airbnb Host | Ex-The Skin Stor...",
-      avatar: "/professional-man-headshot-smile.jpg",
-    },
-    campaign: "The skin story",
-    status: { type: "no-contact", text: "Do Not Contact" },
-  },
-  {
-    id: 8,
-    lead: {
-      name: "Shreya Ramakrishna",
-      title: "Deputy Manager - Founder's Off...",
-      avatar: "/professional-woman-headshot-business.png",
-    },
-    campaign: "Pokonut",
-    status: { type: "followup", text: "Followup 10 mins ago" },
-  },
+  // {
+  //   id: 7,
+  //   lead: {
+  //     name: "Utkarsh K.",
+  //     title: "Airbnb Host | Ex-The Skin Stor...",
+  //     avatar: "/professional-man-headshot-smile.jpg",
+  //   },
+  //   campaign: "The skin story",
+  //   status: { type: "no-contact", text: "Do Not Contact" },
+  // },
+  // {
+  //   id: 8,
+  //   lead: {
+  //     name: "Shreya Ramakrishna",
+  //     title: "Deputy Manager - Founder's Off...",
+  //     avatar: "/professional-woman-headshot-business.png",
+  //   },
+  //   campaign: "Pokonut",
+  //   status: { type: "followup", text: "Followup 10 mins ago" },
+  // },
 ]
 
 export function RecentActivityComponent() {
@@ -97,7 +97,7 @@ export function RecentActivityComponent() {
     switch (status.type) {
       case "pending":
         return (
-          <div className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+          <div className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full  text-sm font-medium flex items-center gap-1">
             <Clock className="h-3 w-3" />
             {status.text}
           </div>
@@ -166,7 +166,7 @@ export function RecentActivityComponent() {
       </div>
 
       {/* Activity list */}
-      <div className="space-y-4">
+      <div className="space-y-2 overflow-y-auto">
         {mockActivities.map((activity) => (
           <div key={activity.id} className="grid grid-cols-3 gap-4 items-center py-3">
             {/* Lead info */}

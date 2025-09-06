@@ -13,30 +13,34 @@ import {
 export default function Dashboard() {
   return (
     <>
-    <Breadcrumb>
-  <BreadcrumbList>
-    <BreadcrumbItem>
-      <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
-    </BreadcrumbItem>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink className="px-5" href="/dashboard">Dashboard</BreadcrumbLink>
+          </BreadcrumbItem>
 
-  </BreadcrumbList>
-</Breadcrumb>
+        </BreadcrumbList>
+    </Breadcrumb>
     <div className="min-h-screen bg-gray-50 py-1 pt-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <div className="max-w-5xl mx-auto">
+       
           {/* Left column */}
-          <div className="flex flex-col gap-6 ">
-            <CampaignsComponent />
-            <LinkedInAccountsComponent />
-          </div>
-
-          {/* Right column */}
-          <div className="h-full">
-            <RecentActivityComponent />
+          <div className="flex gap-4 h-full">
+            <div className="flex flex-col gap-4 w-8/17 h-full">
+              <div className="w-full">
+                <CampaignsComponent />
+              </div>
+              <div className="">
+                <LinkedInAccountsComponent />
+              </div>
+            </div>
+            <div className="w-9/17 h-full">
+              <RecentActivityComponent />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+  
     </>
   )
 }

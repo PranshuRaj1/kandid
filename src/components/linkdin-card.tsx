@@ -36,14 +36,14 @@ const mockLinkedInAccounts = [
     status: "Connected",
     requests: { current: 18, total: 100 },
   },
-  {
-    id: 5,
-    name: "Pulkit Garg",
-    email: "1999pulkitgarg@gmail.com",
-    avatar: "/professional-man-headshot.png",
-    status: "Connected",
-    requests: { current: 17, total: 30 },
-  },
+  // {
+  //   id: 5,
+  //   name: "Pulkit Garg",
+  //   email: "1999pulkitgarg@gmail.com",
+  //   avatar: "/professional-man-headshot.png",
+  //   status: "Connected",
+  //   requests: { current: 17, total: 30 },
+  // },
 ]
 
 export function LinkedInAccountsComponent() {
@@ -60,11 +60,11 @@ export function LinkedInAccountsComponent() {
       </div>
 
       {/* Account list */}
-      <div className="space-y-4">
+      <div className="space-y-1 max-h-72 ">
         {mockLinkedInAccounts.map((account) => (
           <div key={account.id} className="grid grid-cols-3 gap-4 items-center py-3">
             {/* Account info */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center ">
               <Avatar className="h-10 w-10">
                 <AvatarImage src={account.avatar || "/placeholder.svg"} alt={account.name} />
                 <AvatarFallback>
