@@ -43,7 +43,7 @@ export function Sidebar() {
 
   return (
     <div
-      className={`${isOpen ? "w-64" : "w-0"} h-screen bg-white dark:bg-gray-900 border-r border-gray-200 rounded-xl dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out overflow-hidden`}
+      className={`${isOpen ? "w-64" : "w-0"} h-full bg-white dark:bg-gray-900 border-r border-gray-200 rounded-xl dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0`}
     >
       {/* Header */}
       <div className="p-3 border-b border-gray-100 dark:border-gray-700 flex-shrink-0 ">
@@ -160,27 +160,7 @@ export function Sidebar() {
         </div>
 
         {/* Admin Panel Section */}
-        <div className="p-3">
-          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 whitespace-nowrap">
-            Admin Panel
-          </div>
-          <nav className="space-y-1">
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-            >
-              <Activity className="w-4 h-4 mr-3 flex-shrink-0" />
-              <span className="whitespace-nowrap">Activity logs</span>
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-            >
-              <FileText className="w-4 h-4 mr-3 flex-shrink-0" />
-              <span className="whitespace-nowrap">User logs</span>
-            </Button>
-          </nav>
-        </div>
+        
       </div>
 
       {/* Bottom Icons */}
