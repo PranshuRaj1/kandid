@@ -17,15 +17,29 @@ import {
   Headphones,
   Moon,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
 } from "lucide-react"
 import { useSidebarStore } from "@/lib/store/sidebar-store"
 import { useThemeStore } from "@/lib/store/theme-store"
 import Image from "next/image"
+import { useRouter, usePathname } from "next/navigation"
 
 export function Sidebar() {
   const { isOpen } = useSidebarStore()
   const { isDark, toggleTheme } = useThemeStore()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const isActiveRoute = (route: string) => {
+    if (route === "/dashboard") {
+      return pathname === "/" || pathname === "/dashboard"
+    }
+    return pathname === route
+  }
+
+  const handleNavigation = (route: string) => {
+    router.push(route)
+  }
 
   return (
     <div
@@ -81,14 +95,24 @@ export function Sidebar() {
           <nav className="space-y-1">
             <Button
               variant="ghost"
-              className="w-full justify-start bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+              className={`w-full justify-start ${
+                isActiveRoute("/dashboard")
+                  ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              }`}
+              onClick={() => handleNavigation("/dashboard")}
             >
               <Home className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">Dashboard</span>
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className={`w-full justify-start ${
+                isActiveRoute("/leads")
+                  ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              }`}
+              onClick={() => handleNavigation("/leads")}
             >
               <Users className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">Leads</span>
