@@ -7,7 +7,7 @@ export default function HomePage() {
 
       <div className="flex flex-col h-full">
 
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6 overflow-hidden">
           <CampaignsList />
         </div>
       </div>

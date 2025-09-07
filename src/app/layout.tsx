@@ -24,13 +24,15 @@ export default function RootLayout({
       <body className={inter.className}>
         <LayoutWrapper>
           <div>
-            <div className="flex-1 flex flex-col ">  
+            <div className="flex-1 flex flex-col overflow-hidden ">  
               <AppHeader />
               {children}
+              
             </div>
            
           </div>
         </LayoutWrapper>
+        
       </body>
     </html>
   )

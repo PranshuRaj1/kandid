@@ -95,7 +95,7 @@ export function Sidebar() {
           <nav className="space-y-1">
             <Button
               variant="ghost"
-              className={`w-full justify-start ${
+              className={`w-full justify-start cursor-pointer ${
                 isActiveRoute("/dashboard")
                   ? "bg-blue-50 dark:bg-blue-900/20 cursor-pointer text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
                   : "text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -107,7 +107,7 @@ export function Sidebar() {
             </Button>
             <Button
               variant="ghost"
-              className={`w-full justify-start ${
+              className={`w-full justify-start cursor-pointer ${
                 isActiveRoute("/leads")
                   ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -119,8 +119,9 @@ export function Sidebar() {
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-            >
+              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+              onClick={() => handleNavigation("/campaign")}
+>
               <Megaphone className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">Campaign</span>
             </Button>

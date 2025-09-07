@@ -19,6 +19,7 @@ interface Campaign {
   connectionAccepted: number
 }
 
+// Mock data remains the same...
 const mockCampaigns: Campaign[] = [
   {
     id: "1",
@@ -121,6 +122,7 @@ const mockCampaigns: Campaign[] = [
   },
 ]
 
+
 export function CampaignsList() {
   const [activeTab, setActiveTab] = useState("All Campaigns")
   const [searchQuery, setSearchQuery] = useState("")
@@ -135,7 +137,8 @@ export function CampaignsList() {
   }
 
   return (
-    <div className="space-y-6">
+    // CHANGE 1: Main container set to flex column, full screen height, and gap for spacing.
+    <div className="flex flex-col h-screen p-6 gap-6 bg-gray-50 dark:bg-gray-900 border rounded-xl">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -178,28 +181,29 @@ export function CampaignsList() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      {/* CHANGE 2: Table wrapper grows to fill remaining space and handles its own vertical scrolling. */}
+      <div className="flex-1 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-y-auto">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Campaign Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Total Leads
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Request Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Connection Status
-                </th>
-              </tr>
-            </thead>
+            <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0">
+      <tr>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          Campaign Name
+        </th>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          Status
+        </th>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          Total Leads
+        </th>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          Request Status
+        </th>
+        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          Connection Status
+        </th>
+      </tr>
+    </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {filteredCampaigns.map((campaign) => (
                 <tr

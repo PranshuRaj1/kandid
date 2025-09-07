@@ -126,7 +126,7 @@ export function CampaignDetails({ campaignId, campaignName }: CampaignDetailsPro
 
 function OverviewTab({ campaignName }: { campaignName: string }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-hidden">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
