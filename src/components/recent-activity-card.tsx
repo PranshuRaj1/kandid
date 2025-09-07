@@ -129,7 +129,7 @@ export function RecentActivityComponent() {
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white rounded-lg border border-gray-200 p-6 ">
       {/* Header with dropdown */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-medium text-gray-900">Recent Activity</h2>
@@ -166,7 +166,7 @@ export function RecentActivityComponent() {
       </div>
 
       {/* Activity list */}
-      <div className="space-y-1 overflow-y-auto max-h-96">
+      <div className="space-y-1 overflow-y-auto max-h-110 ">
         {mockActivities.map((activity) => (
           <div key={activity.id} className="grid grid-cols-3 gap-4 items-center py-3">
             {/* Lead info */}
