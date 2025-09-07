@@ -3,133 +3,264 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Search, Users, Mail, MessageSquare, UserCheck } from "lucide-react"
-import { useCampaignStore } from "@/lib/store/campaign-store"
+import { Search, Users, MessageSquare, Plus } from "lucide-react"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
-interface CampaignsListProps {
-  onCampaignSelect: (campaignId: string) => void
+interface Campaign {
+  id: string
+  name: string
+  status: "Active" | "Inactive"
+  totalLeads: number
+  requestSent: number
+  requestAccepted: number
+  requestReplied: number
+  connectionSent: number
+  connectionAccepted: number
 }
 
-export function CampaignsList({ onCampaignSelect }: CampaignsListProps) {
-  const { campaigns } = useCampaignStore()
+const mockCampaigns: Campaign[] = [
+  {
+    id: "1",
+    name: "Just Herbs",
+    status: "Active",
+    totalLeads: 20,
+    requestSent: 0,
+    requestAccepted: 20,
+    requestReplied: 0,
+    connectionSent: 0,
+    connectionAccepted: 0,
+  },
+  {
+    id: "2",
+    name: "Juicy chemistry",
+    status: "Active",
+    totalLeads: 11,
+    requestSent: 0,
+    requestAccepted: 11,
+    requestReplied: 0,
+    connectionSent: 0,
+    connectionAccepted: 0,
+  },
+  {
+    id: "3",
+    name: "Hyugalife 2",
+    status: "Active",
+    totalLeads: 19,
+    requestSent: 0,
+    requestAccepted: 19,
+    requestReplied: 0,
+    connectionSent: 0,
+    connectionAccepted: 0,
+  },
+  {
+    id: "4",
+    name: "Honeyveda",
+    status: "Active",
+    totalLeads: 3,
+    requestSent: 0,
+    requestAccepted: 3,
+    requestReplied: 0,
+    connectionSent: 0,
+    connectionAccepted: 0,
+  },
+  {
+    id: "5",
+    name: "HempStreet",
+    status: "Active",
+    totalLeads: 7,
+    requestSent: 0,
+    requestAccepted: 7,
+    requestReplied: 0,
+    connectionSent: 0,
+    connectionAccepted: 0,
+  },
+  {
+    id: "6",
+    name: "HealthyHey 2",
+    status: "Active",
+    totalLeads: 5,
+    requestSent: 0,
+    requestAccepted: 5,
+    requestReplied: 0,
+    connectionSent: 0,
+    connectionAccepted: 0,
+  },
+  {
+    id: "7",
+    name: "Herbal Chakra",
+    status: "Active",
+    totalLeads: 19,
+    requestSent: 0,
+    requestAccepted: 19,
+    requestReplied: 0,
+    connectionSent: 0,
+    connectionAccepted: 0,
+  },
+  {
+    id: "8",
+    name: "Healofy",
+    status: "Active",
+    totalLeads: 14,
+    requestSent: 0,
+    requestAccepted: 14,
+    requestReplied: 0,
+    connectionSent: 0,
+    connectionAccepted: 0,
+  },
+  {
+    id: "9",
+    name: "HealthSense",
+    status: "Active",
+    totalLeads: 2,
+    requestSent: 0,
+    requestAccepted: 2,
+    requestReplied: 0,
+    connectionSent: 0,
+    connectionAccepted: 0,
+  },
+]
 
-  const handleCampaignClick = (campaignId: string) => {
-    onCampaignSelect(campaignId)
+export function CampaignsList() {
+  const [activeTab, setActiveTab] = useState("All Campaigns")
+  const [searchQuery, setSearchQuery] = useState("")
+  const router = useRouter()
+
+  const filteredCampaigns = mockCampaigns.filter((campaign) =>
+    campaign.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
+
+  const handleCampaignClick = (campaignId: string, campaignName: string) => {
+    router.push(`/campaign/${campaignId}?name=${encodeURIComponent(campaignName)}`)
   }
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 h-full">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Campaigns</h1>
-            <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your campaigns and track their performance.</p>
-          </div>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">Create Campaign</Button>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Campaigns</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">Manage your campaigns and track their performance.</p>
         </div>
+        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Plus className="w-4 h-4 mr-2" />
+          Create Campaign
+        </Button>
+      </div>
 
-        {/* Filters and Search */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+      {/* Tabs and Search */}
+      <div className="flex items-center justify-between">
+        <div className="flex space-x-1">
+          {["All Campaigns", "Active", "Inactive"].map((tab) => (
             <Button
-              variant="ghost"
-              className="text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 rounded-none"
+              key={tab}
+              variant={activeTab === tab ? "default" : "ghost"}
+              className={`${
+                activeTab === tab
+                  ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm border border-gray-200 dark:border-gray-700"
+                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              }`}
+              onClick={() => setActiveTab(tab)}
             >
-              All Campaigns
+              {tab}
             </Button>
-            <Button variant="ghost" className="text-gray-500 dark:text-gray-400">
-              Active
-            </Button>
-            <Button variant="ghost" className="text-gray-500 dark:text-gray-400">
-              Inactive
-            </Button>
-          </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input placeholder="Search campaigns..." className="pl-10 w-80" />
-          </div>
+          ))}
+        </div>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            placeholder="Search campaigns..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10 w-80"
+          />
         </div>
       </div>
 
-      {/* Table Header */}
-      <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-        <div className="grid grid-cols-6 gap-4 text-sm font-medium text-gray-500 dark:text-gray-400">
-          <div>Campaign Name</div>
-          <div>Status</div>
-          <div>Total Leads</div>
-          <div>Request Status</div>
-          <div>Connection Status</div>
-          <div></div>
-        </div>
-      </div>
-
-      {/* Campaign Rows */}
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        {campaigns.map((campaign) => (
-          <div
-            key={campaign.id}
-            className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors"
-            onClick={() => handleCampaignClick(campaign.id)}
-          >
-            <div className="grid grid-cols-6 gap-4 items-center">
-              {/* Campaign Name */}
-              <div className="font-medium text-gray-900 dark:text-white">{campaign.name}</div>
-
-              {/* Status */}
-              <div>
-                <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                  {campaign.status}
-                </Badge>
-              </div>
-
-              {/* Total Leads */}
-              <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
-                <Users className="w-4 h-4" />
-                <span>{campaign.totalLeads}</span>
-              </div>
-
-              {/* Request Status */}
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
-                  <UserCheck className="w-4 h-4" />
-                  <span className="text-sm">{campaign.requestAccepted}</span>
-                </div>
-                <div className="flex items-center gap-1 text-yellow-600 dark:text-yellow-400">
-                  <Mail className="w-4 h-4" />
-                  <span className="text-sm">{campaign.requestSent}</span>
-                </div>
-                <div className="flex items-center gap-1 text-red-600 dark:text-red-400">
-                  <MessageSquare className="w-4 h-4" />
-                  <span className="text-sm">{campaign.requestReplied}</span>
-                </div>
-              </div>
-
-              {/* Connection Status */}
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
-                  <UserCheck className="w-4 h-4" />
-                  <span className="text-sm">{campaign.connectionRequests}</span>
-                </div>
-                <div className="flex items-center gap-1 text-purple-600 dark:text-purple-400">
-                  <MessageSquare className="w-4 h-4" />
-                  <span className="text-sm">{campaign.connectionMessages}</span>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex justify-end">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+      {/* Table */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Campaign Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Total Leads
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Request Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Connection Status
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              {filteredCampaigns.map((campaign) => (
+                <tr
+                  key={campaign.id}
+                  className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
+                  onClick={() => handleCampaignClick(campaign.id, campaign.name)}
                 >
-                  •••
-                </Button>
-              </div>
-            </div>
-          </div>
-        ))}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900 dark:text-white">{campaign.name}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <Badge
+                      variant="secondary"
+                      className={`${
+                        campaign.status === "Active"
+                          ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
+                          : "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400"
+                      }`}
+                    >
+                      {campaign.status}
+                    </Badge>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center text-sm text-gray-900 dark:text-white">
+                      <Users className="w-4 h-4 mr-2 text-gray-400" />
+                      {campaign.totalLeads}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center text-sm">
+                        <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                        <span className="text-gray-600 dark:text-gray-400">{campaign.requestSent}</span>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
+                        <span className="text-gray-600 dark:text-gray-400">{campaign.requestAccepted}</span>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                        <span className="text-gray-600 dark:text-gray-400">{campaign.requestReplied}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center text-sm">
+                        <Users className="w-4 h-4 mr-1 text-blue-500" />
+                        <span className="text-gray-600 dark:text-gray-400">{campaign.connectionSent}</span>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <MessageSquare className="w-4 h-4 mr-1 text-purple-500" />
+                        <span className="text-gray-600 dark:text-gray-400">{campaign.connectionAccepted}</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
