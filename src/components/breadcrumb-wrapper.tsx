@@ -8,9 +8,6 @@ import { useSidebarStore } from '@/lib/store/sidebar-store';
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { Button } from './ui/button';
 
-function showBreadcrumb() {
-  
-}
 
 export function CustomBreadcrumb() {
   const pathname = usePathname();

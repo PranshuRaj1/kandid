@@ -95,10 +95,10 @@ export function Sidebar() {
           <nav className="space-y-1">
             <Button
               variant="ghost"
-              className={`w-full justify-start ${
+              className={`w-full justify-start cursor-pointer ${
                 isActiveRoute("/dashboard")
-                  ? "bg-blue-50 dark:bg-blue-900/20 cursor-pointer text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
-                  : "text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+                  ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
               }`}
               onClick={() => handleNavigation("/dashboard")}
             >
@@ -107,7 +107,7 @@ export function Sidebar() {
             </Button>
             <Button
               variant="ghost"
-              className={`w-full justify-start ${
+              className={`w-full justify-start cursor-pointer ${
                 isActiveRoute("/leads")
                   ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -119,14 +119,15 @@ export function Sidebar() {
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="w-full justify-start cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              onClick={() => handleNavigation("/campaign")}
             >
               <Megaphone className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">Campaign</span>
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="w-full justify-start cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               <Mail className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">Messages</span>
@@ -134,7 +135,7 @@ export function Sidebar() {
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="w-full justify-start cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               <Building2 className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">LinkedIn Accounts</span>
@@ -150,7 +151,7 @@ export function Sidebar() {
           <nav className="space-y-1">
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="w-full justify-start cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               <Settings className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">Setting & Billing</span>
@@ -166,14 +167,14 @@ export function Sidebar() {
           <nav className="space-y-1">
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="w-full justify-start cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               <Activity className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">Activity logs</span>
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="w-full justify-start cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               <FileText className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">User logs</span>
@@ -188,21 +189,21 @@ export function Sidebar() {
           <Button
             variant="ghost"
             size="sm"
-            className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="p-2 cursor-pointer text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <MessageSquare className="w-4 h-4" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="p-2 cursor-pointer text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <Link className="w-4 h-4" />
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+            className="p-2 cursor-pointer text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <Headphones className="w-4 h-4" />
           </Button>
@@ -210,7 +211,7 @@ export function Sidebar() {
             variant="ghost"
             size="sm"
             onClick={toggleTheme}
-            className={`p-2 transition-colors ${isDark ? "text-yellow-500 hover:text-yellow-400" : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"}`}
+            className={`p-2 cursor-pointer transition-colors ${isDark ? "text-yellow-500 hover:text-yellow-400" : "text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"}`}
           >
             <Moon className="w-4 h-4" />
           </Button>

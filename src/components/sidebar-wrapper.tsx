@@ -26,7 +26,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       <Sidebar />
       
 
-      <main className="flex-1 overflow-auto p-2 ">{children}
+      <main className="flex-1 p-2 ">{children}
         
       </main>
     </div>

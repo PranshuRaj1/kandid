@@ -20,7 +20,7 @@ export function AppHeader() {
         variant="ghost"
         size="sm"
         onClick={toggle}
-        className="mr-2"
+        className="mr-2 cursor-pointer"
         aria-label="Toggle sidebar"
       >
         {isOpen ? (
