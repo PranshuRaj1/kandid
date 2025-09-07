@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { LayoutWrapper } from "@/components/sidebar-wrapper"
 import { CustomBreadcrumb } from "@/components/breadcrumb-wrapper"
+import { AppHeader } from "@/components/AppHeader"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,8 +23,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <LayoutWrapper>
           <div>
-            <div>
-              <CustomBreadcrumb />
+            <div className="flex-1 flex flex-col overflow-hidden">  
+              <AppHeader />
               {children}
             </div>
            
