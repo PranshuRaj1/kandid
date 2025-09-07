@@ -166,7 +166,7 @@ export function RecentActivityComponent() {
       </div>
 
       {/* Activity list */}
-      <div className="space-y-2 overflow-y-auto">
+      <div className="space-y-1 overflow-y-auto max-h-96">
         {mockActivities.map((activity) => (
           <div key={activity.id} className="grid grid-cols-3 gap-4 items-center py-3">
             {/* Lead info */}

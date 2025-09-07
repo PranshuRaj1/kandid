@@ -30,7 +30,7 @@ export function LayoutWrapper({ children }: LayoutWrapperProps) {
       
         
 
-        <main className="flex-1 overflow-auto p-2 ">{children}</main>
+        <main className="flex-1  p-2 ">{children}</main>
 
     </div>
   )

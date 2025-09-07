@@ -1,5 +1,7 @@
 import { LeadsPage } from "@/components/leads-page"
 
 export default function Leads() {
-  return <LeadsPage />
+  return (
+    <div className="overflow-hidden"><LeadsPage  /></div>
+  )
 }

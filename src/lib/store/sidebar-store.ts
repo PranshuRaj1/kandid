@@ -1,14 +1,23 @@
+"use client"
 
-import { create } from 'zustand';
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
-//  Define the interface for our store's state and actions
-interface SidebarState {
-  isOpen: boolean;
-  toggleSidebar: () => void;
+interface SidebarStore {
+  isOpen: boolean
+  toggle: () => void
+  setOpen: (open: boolean) => void
 }
 
-//  store
-export const useSidebarStore = create<SidebarState>((set) => ({
-  isOpen: true, // The initial state
-  toggleSidebar: () => set((state) => ({ isOpen: !state.isOpen })), // The action to update the state
-}));
+export const useSidebarStore = create<SidebarStore>()(
+  persist(
+    (set) => ({
+      isOpen: true,
+      toggle: () => set((state) => ({ isOpen: !state.isOpen })),
+      setOpen: (open) => set({ isOpen: open }),
+    }),
+    {
+      name: "sidebar-is-open",
+    },
+  ),
+)

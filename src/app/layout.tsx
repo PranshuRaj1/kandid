@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { LayoutWrapper } from "@/components/sidebar-wrapper"
+import { CustomBreadcrumb } from "@/components/breadcrumb-wrapper"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,7 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <LayoutWrapper>{children}</LayoutWrapper>
+        <LayoutWrapper>
+          <div>
+            <div>
+              <CustomBreadcrumb />
+              {children}
+            </div>
+           
+          </div>
+        </LayoutWrapper>
       </body>
     </html>
   )

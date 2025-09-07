@@ -46,7 +46,7 @@ export function Sidebar() {
       className={`${isOpen ? "w-64" : "w-0"} h-screen bg-white dark:bg-gray-900 border-r border-gray-200 rounded-xl dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out overflow-hidden`}
     >
       {/* Header */}
-      <div className="p-3 border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
+      <div className="p-3 border-b border-gray-100 dark:border-gray-700 flex-shrink-0 ">
         <div className="flex items-center">
           <div className="w-full flex items-center justify-start">
             <Image
@@ -97,8 +97,8 @@ export function Sidebar() {
               variant="ghost"
               className={`w-full justify-start ${
                 isActiveRoute("/dashboard")
-                  ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                  ? "bg-blue-50 dark:bg-blue-900/20 cursor-pointer text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                  : "text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
               }`}
               onClick={() => handleNavigation("/dashboard")}
             >

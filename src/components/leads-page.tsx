@@ -392,20 +392,11 @@ export function LeadsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto ">
-        <Breadcrumb className="p-6">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink className="px-5" href="/leads">leads</BreadcrumbLink>
-          </BreadcrumbItem>
-
-        </BreadcrumbList>
-    </Breadcrumb>
-
+    <div className="pt-8 px-4 py-1">
+      
         {/* Leads Table */}
-        <Card className="overflow-hidden">
-          <div className="overflow-x-auto">
+        <Card className="">
+          <div className="">
             <table className="w-full">
               <thead className="bg-gray-50 border-b">
                 <tr>
@@ -469,8 +460,7 @@ export function LeadsPage() {
             </table>
           </div>
         </Card>
-      </div>
-
+      
       {/* Lead Profile Sidebar */}
       <LeadProfileSidebar lead={selectedLead} isOpen={sidebarOpen} onClose={closeSidebar} />
     </div>

@@ -1,15 +1,23 @@
+"use client"
+
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
-
-//  Define the interface for our store's state and actions
-interface ThemeState {
+interface ThemeStore {
   isDark: boolean
   toggleTheme: () => void
+  setTheme: (isDark: boolean) => void
 }
 
-
-// store
-export const useThemeStore = create<ThemeState>((set) => ({
-  isDark: false,
-  toggleTheme: () => set((state) => ({ isDark: !state.isDark })),
-}))
+export const useThemeStore = create<ThemeStore>()(
+  persist(
+    (set) => ({
+      isDark: false,
+      toggleTheme: () => set((state) => ({ isDark: !state.isDark })),
+      setTheme: (isDark) => set({ isDark }),
+    }),
+    {
+      name: "theme-preference",
+    },
+  ),
+)

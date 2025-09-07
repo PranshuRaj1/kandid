@@ -60,7 +60,7 @@ export function LinkedInAccountsComponent() {
       </div>
 
       {/* Account list */}
-      <div className="space-y-1 max-h-72 ">
+      <div className="space-y-1 overflow-y-auto max-h-96">
         {mockLinkedInAccounts.map((account) => (
           <div key={account.id} className="grid grid-cols-3 gap-4 items-center py-3">
             {/* Account info */}

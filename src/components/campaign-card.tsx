@@ -76,7 +76,7 @@ export function CampaignsComponent() {
       </div>
 
       {/* Campaign list */}
-      <div className="space-y-1 mt-4 max-h-72 ">
+      <div className="space-y-1 mt-4 overflow-y-auto ">
         {filteredCampaigns.map((campaign) => (
           <div
             key={campaign.id}
