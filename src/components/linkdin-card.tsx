@@ -134,7 +134,7 @@ export function LinkedInAccountsComponent() {
       {/* Table headers */}
       <div className="grid grid-cols-3 gap-4 pb-4 mb-4 text-xs border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
         <div className=" font-medium text-gray-500 dark:text-gray-400">Account</div>
-        <div className=" font-medium text-gray-500 dark:text-gray-400 text-center">Status</div>
+        <div className=" font-medium text-gray-500 dark:text-gray-400 text-center px-25">Status</div>
         <div className=" font-medium text-gray-500 dark:text-gray-400 text-right">Requests</div>
       </div>
 
@@ -167,7 +167,7 @@ export function LinkedInAccountsComponent() {
               </div>
 
               {/* Status */}
-              <div className="flex justify-center text-xs">
+              <div className="flex justify-center text-xs px-30">
                 <div className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                   <div className="w-3 h-3 bg-white rounded-full flex items-center justify-center">
                     <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
