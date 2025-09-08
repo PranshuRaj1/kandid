@@ -1,6 +1,8 @@
 "use client"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useState } from "react"
 
 // Mock LinkedIn accounts data
 const mockLinkedInAccounts = [
@@ -36,81 +38,118 @@ const mockLinkedInAccounts = [
     status: "Connected",
     requests: { current: 18, total: 100 },
   },
-  // {
-  //   id: 5,
-  //   name: "Pulkit Garg",
-  //   email: "1999pulkitgarg@gmail.com",
-  //   avatar: "/professional-man-headshot.png",
-  //   status: "Connected",
-  //   requests: { current: 17, total: 30 },
-  // },
 ]
 
-export function LinkedInAccountsComponent() {
+function LinkedInAccountSkeleton() {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      {/* Header */}
-      <h2 className="text-xl font-medium text-gray-900 mb-6">LinkedIn Accounts</h2>
-
-      {/* Table headers */}
-      <div className="grid grid-cols-3 gap-4 pb-4 mb-4 border-b border-gray-100">
-        <div className="text-sm font-medium text-gray-500">Account</div>
-        <div className="text-sm font-medium text-gray-500 text-center">Status</div>
-        <div className="text-sm font-medium text-gray-500 text-right">Requests</div>
+    <div className="space-y-4">
+      <Skeleton className="h-6 w-32" />
+      <div className="grid grid-cols-3 gap-4 pb-4">
+        <Skeleton className="h-4 w-16" />
+        <Skeleton className="h-4 w-12" />
+        <Skeleton className="h-4 w-16" />
       </div>
-
-      {/* Account list */}
-      <div className="space-y-1 overflow-y-auto max-h-96">
-        {mockLinkedInAccounts.map((account) => (
-          <div key={account.id} className="grid grid-cols-3 gap-4 items-center py-3">
-            {/* Account info */}
-            <div className="flex items-center ">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={account.avatar || "/placeholder.svg"} alt={account.name} />
-                <AvatarFallback>
-                  {account.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900">{account.name}</span>
-                  <div className="w-4 h-4 bg-orange-400 rounded flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">in</span>
-                  </div>
-                </div>
-                <div className="text-sm text-gray-500">{account.email}</div>
+      <div className="space-y-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="grid grid-cols-3 gap-4 items-center py-3">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <div className="space-y-1">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-3 w-32" />
               </div>
             </div>
-
-            {/* Status */}
             <div className="flex justify-center">
-              <div className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
-                <div className="w-3 h-3 bg-white rounded-full flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
-                </div>
-                Connected
-              </div>
+              <Skeleton className="h-6 w-20 rounded-full" />
             </div>
-
-            {/* Requests progress */}
             <div className="flex items-center justify-end gap-3">
-              <div className="flex-1 max-w-[100px]">
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-blue-600 h-2 rounded-full"
-                    style={{ width: `${(account.requests.current / account.requests.total) * 100}%` }}
-                  ></div>
-                </div>
-              </div>
-              <span className="text-sm text-gray-600 min-w-[40px]">
-                {account.requests.current}/{account.requests.total}
-              </span>
+              <Skeleton className="h-2 w-20 rounded-full" />
+              <Skeleton className="h-4 w-8" />
             </div>
           </div>
         ))}
+      </div>
+    </div>
+  )
+}
+
+export function LinkedInAccountsComponent() {
+  const [isLoading, setIsLoading] = useState(false)
+
+  if (isLoading) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 h-full">
+        <LinkedInAccountSkeleton />
+      </div>
+    )
+  }
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 h-full flex flex-col">
+      {/* Header */}
+      <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-6">LinkedIn Accounts</h2>
+
+      {/* Table headers */}
+      <div className="grid grid-cols-3 gap-4 pb-4 mb-4 border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
+        <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Account</div>
+        <div className="text-sm font-medium text-gray-500 dark:text-gray-400 text-center">Status</div>
+        <div className="text-sm font-medium text-gray-500 dark:text-gray-400 text-right">Requests</div>
+      </div>
+
+      {/* Account list */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="space-y-1">
+          {mockLinkedInAccounts.map((account) => (
+            <div key={account.id} className="grid grid-cols-3 gap-4 items-center py-3">
+              {/* Account info */}
+              <div className="flex items-center gap-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={account.avatar || "/placeholder.svg"} alt={account.name} />
+                  <AvatarFallback className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    {account.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900 dark:text-white">{account.name}</span>
+                    <div className="w-4 h-4 bg-orange-400 rounded flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">in</span>
+                    </div>
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{account.email}</div>
+                </div>
+              </div>
+
+              {/* Status */}
+              <div className="flex justify-center">
+                <div className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                  <div className="w-3 h-3 bg-white rounded-full flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                  </div>
+                  Connected
+                </div>
+              </div>
+
+              {/* Requests progress */}
+              <div className="flex items-center justify-end gap-3">
+                <div className="flex-1 max-w-[100px]">
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full"
+                      style={{ width: `${(account.requests.current / account.requests.total) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+                <span className="text-sm text-gray-600 dark:text-gray-300 min-w-[40px]">
+                  {account.requests.current}/{account.requests.total}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Progress } from "@/components/ui/progress"
+import { Skeleton } from "@/components/ui/skeleton"
 import { BarChart3, Users, Mail, MessageSquare, Calendar, TrendingUp, Clock, Eye, Save } from "lucide-react"
 import { useState } from "react"
 
@@ -69,8 +70,138 @@ const mockLeads: Lead[] = [
   },
 ]
 
+function OverviewSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-8 w-12" />
+              </div>
+              <Skeleton className="h-12 w-12 rounded-lg" />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <Skeleton className="h-6 w-32 mb-4" />
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="space-y-2">
+                <div className="flex justify-between">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-8" />
+                </div>
+                <Skeleton className="h-2 w-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <Skeleton className="h-6 w-32 mb-4" />
+          <div className="space-y-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex items-center">
+                <Skeleton className="h-4 w-4 mr-3" />
+                <Skeleton className="h-4 w-20 mr-2" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LeadsSkeleton() {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="p-6">
+        <div className="grid grid-cols-4 gap-4 pb-4 mb-4">
+          <Skeleton className="h-4 w-12" />
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-4 w-12" />
+        </div>
+        <div className="space-y-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="grid grid-cols-4 gap-4 items-center py-3">
+              <div className="flex items-center">
+                <Skeleton className="h-10 w-10 rounded-full mr-3" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+              <Skeleton className="h-4 w-48" />
+              <div className="flex space-x-1">
+                {Array.from({ length: 4 }).map((_, j) => (
+                  <Skeleton key={j} className="w-1 h-6" />
+                ))}
+              </div>
+              <Skeleton className="h-6 w-20 rounded-full" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SequenceSkeleton() {
+  return (
+    <div className="space-y-6">
+      <Skeleton className="h-6 w-32" />
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-4">
+            <Skeleton className="h-5 w-32" />
+            <div className="flex space-x-2">
+              <Skeleton className="h-8 w-20" />
+              <Skeleton className="h-8 w-16" />
+            </div>
+          </div>
+          <Skeleton className="h-4 w-48 mb-4" />
+          <Skeleton className="h-24 w-full" />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function SettingsSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-10 w-32" />
+      </div>
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+        <Skeleton className="h-5 w-28 mb-4" />
+        <div className="space-y-4">
+          <div>
+            <Skeleton className="h-4 w-24 mb-2" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-6 w-12" />
+          </div>
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-4 w-48" />
+            <Skeleton className="h-6 w-12" />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function CampaignDetails({ campaignId, campaignName }: CampaignDetailsProps) {
   const [activeTab, setActiveTab] = useState("Overview")
+  const [isLoading, setIsLoading] = useState(false)
 
   const tabs = [
     { id: "Overview", label: "Overview", icon: BarChart3 },
@@ -115,10 +246,21 @@ export function CampaignDetails({ campaignId, campaignName }: CampaignDetailsPro
 
       {/* Tab Content */}
       <div className="mt-6">
-        {activeTab === "Overview" && <OverviewTab campaignName={campaignName} />}
-        {activeTab === "Leads" && <LeadsTab />}
-        {activeTab === "Sequence" && <SequenceTab />}
-        {activeTab === "Settings" && <SettingsTab campaignName={campaignName} />}
+        {isLoading ? (
+          <>
+            {activeTab === "Overview" && <OverviewSkeleton />}
+            {activeTab === "Leads" && <LeadsSkeleton />}
+            {activeTab === "Sequence" && <SequenceSkeleton />}
+            {activeTab === "Settings" && <SettingsSkeleton />}
+          </>
+        ) : (
+          <>
+            {activeTab === "Overview" && <OverviewTab campaignName={campaignName} />}
+            {activeTab === "Leads" && <LeadsTab />}
+            {activeTab === "Sequence" && <SequenceTab />}
+            {activeTab === "Settings" && <SettingsTab campaignName={campaignName} />}
+          </>
+        )}
       </div>
     </div>
   )
@@ -126,7 +268,7 @@ export function CampaignDetails({ campaignId, campaignName }: CampaignDetailsPro
 
 function OverviewTab({ campaignName }: { campaignName: string }) {
   return (
-    <div className="space-y-6 overflow-hidden">
+    <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">

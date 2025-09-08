@@ -1,21 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
-import { ChevronDown, ChevronRight, Menu, X, Clock, CheckCircle, AlertCircle, MessageSquare } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
+import { ChevronDown, X, Clock, CheckCircle, AlertCircle, MessageSquare } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
 
 // Mock data for leads
 const leadsData = [
@@ -166,10 +158,24 @@ const leadsData = [
 ]
 
 const statusConfig = {
-  pending: { label: "Pending Approval", color: "bg-purple-100 text-purple-700 border-purple-200" },
-  sent: { label: "Sent", color: "bg-orange-100 text-orange-700 border-orange-200" },
-  blocked: { label: "Do Not Contact", color: "bg-gray-100 text-gray-700 border-gray-200" },
-  followup: { label: "Followup", color: "bg-blue-100 text-blue-700 border-blue-200" },
+  pending: {
+    label: "Pending Approval",
+    color:
+      "bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/20 dark:text-purple-300 dark:border-purple-800",
+  },
+  sent: {
+    label: "Sent",
+    color:
+      "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/20 dark:text-orange-300 dark:border-orange-800",
+  },
+  blocked: {
+    label: "Do Not Contact",
+    color: "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700",
+  },
+  followup: {
+    label: "Followup",
+    color: "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800",
+  },
 }
 
 const ActivityChart = ({ status }: { status: string }) => {
@@ -195,15 +201,15 @@ const ActivityChart = ({ status }: { status: string }) => {
   const getBarColor = (status: string) => {
     switch (status) {
       case "sent":
-        return "bg-yellow-400"
+        return "bg-yellow-400 dark:bg-yellow-500"
       case "blocked":
-        return "bg-purple-400"
+        return "bg-purple-400 dark:bg-purple-500"
       case "followup":
-        return "bg-blue-400"
+        return "bg-blue-400 dark:bg-blue-500"
       case "pending":
-        return "bg-purple-400"
+        return "bg-purple-400 dark:bg-purple-500"
       default:
-        return "bg-gray-200"
+        return "bg-gray-200 dark:bg-gray-700"
     }
   }
 
@@ -213,12 +219,78 @@ const ActivityChart = ({ status }: { status: string }) => {
   return (
     <div className="flex items-center gap-1 h-8">
       {[1, 2, 3, 4].map((index) => (
-        <div key={index} className={`rounded-sm w-2 h-6 ${barColors[index - 1] === 1 ? activeColor : "bg-gray-200"}`} />
+        <div
+          key={index}
+          className={`rounded-sm w-2 h-6 ${barColors[index - 1] === 1 ? activeColor : "bg-gray-200 dark:bg-gray-700"}`}
+        />
       ))}
     </div>
   )
 }
 
+const LeadsTableSkeleton = () => {
+  return (
+    <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+      <div className="">
+        <table className="w-full">
+          <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <tr>
+              <th className="text-left p-4 font-medium text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-4 w-12" />
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+              </th>
+              <th className="text-left p-4 font-medium text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-4 w-24" />
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+              </th>
+              <th className="text-left p-4 font-medium text-sm text-muted-foreground">
+                <Skeleton className="h-4 w-16" />
+              </th>
+              <th className="text-left p-4 font-medium text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-4 w-12" />
+                  <ChevronDown className="h-4 w-4" />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <tr key={index} className="border-b border-gray-200 dark:border-gray-700">
+                <td className="p-4">
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <div>
+                      <Skeleton className="h-4 w-32 mb-2" />
+                      <Skeleton className="h-3 w-48" />
+                    </div>
+                  </div>
+                </td>
+                <td className="p-4">
+                  <Skeleton className="h-4 w-20" />
+                </td>
+                <td className="p-4">
+                  <div className="flex items-center gap-1 h-8">
+                    {[1, 2, 3, 4].map((barIndex) => (
+                      <Skeleton key={barIndex} className="rounded-sm w-2 h-6" />
+                    ))}
+                  </div>
+                </td>
+                <td className="p-4">
+                  <Skeleton className="h-6 w-24 rounded-full" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  )
+}
 
 const LeadProfileSidebar = ({
   lead,
@@ -277,20 +349,20 @@ const LeadProfileSidebar = ({
   return (
     <>
       {/* Overlay */}
-      {isOpen && <div className="fixed inset-0 bg-black/20 z-40" onClick={onClose} />}
+      {isOpen && <div className="fixed inset-0 bg-black/20 dark:bg-black/40 z-40" onClick={onClose} />}
 
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed right-0 top-0 h-full w-96 bg-white border-l shadow-lg z-50 transform transition-transform duration-300 ease-in-out",
+          "fixed right-0 top-0 h-full w-96 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 shadow-lg z-50 transform transition-transform duration-300 ease-in-out",
           isOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
         <div className="p-6 h-full overflow-y-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold">Lead Profile</h2>
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Lead Profile</h2>
+            <Button variant="ghost" size="sm" onClick={onClose} className="hover:bg-gray-100 dark:hover:bg-gray-800">
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -300,7 +372,7 @@ const LeadProfileSidebar = ({
             <div className="flex items-start gap-4 mb-4">
               <Avatar className="h-16 w-16">
                 <AvatarImage src={lead.avatar || "/placeholder.svg"} alt={lead.name} />
-                <AvatarFallback>
+                <AvatarFallback className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
                   {lead.name
                     .split(" ")
                     .map((n) => n[0])
@@ -308,32 +380,32 @@ const LeadProfileSidebar = ({
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <h3 className="font-semibold text-lg mb-1">{lead.name}</h3>
+                <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-gray-100">{lead.name}</h3>
                 <p className="text-sm text-muted-foreground mb-3">{lead.title}</p>
                 <div className="flex items-center gap-4 text-sm">
                   <span className="flex items-center gap-1">
                     <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    {lead.campaign}
+                    <span className="text-gray-700 dark:text-gray-300">{lead.campaign}</span>
                   </span>
-                  <span className="text-orange-600">{lead.lastActivity}</span>
+                  <span className="text-orange-600 dark:text-orange-400">{lead.lastActivity}</span>
                 </div>
               </div>
             </div>
 
             {/* Additional Profile Info */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h4 className="font-medium mb-3">Additional Profile Info</h4>
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+              <h4 className="font-medium mb-3 text-gray-900 dark:text-gray-100">Additional Profile Info</h4>
               <div className="space-y-2 text-sm">
-                <div>
+                <div className="text-gray-700 dark:text-gray-300">
                   <span className="font-medium">Company:</span> {lead.profileInfo.company}
                 </div>
-                <div>
+                <div className="text-gray-700 dark:text-gray-300">
                   <span className="font-medium">Location:</span> {lead.profileInfo.location}
                 </div>
-                <div>
+                <div className="text-gray-700 dark:text-gray-300">
                   <span className="font-medium">Phone:</span> {lead.profileInfo.phone}
                 </div>
-                <div>
+                <div className="text-gray-700 dark:text-gray-300">
                   <span className="font-medium">Email:</span> {lead.profileInfo.email}
                 </div>
               </div>
@@ -342,7 +414,7 @@ const LeadProfileSidebar = ({
 
           {/* Activity Timeline */}
           <div>
-            <h4 className="font-medium mb-4">Activity Timeline</h4>
+            <h4 className="font-medium mb-4 text-gray-900 dark:text-gray-100">Activity Timeline</h4>
             <div className="space-y-4">
               {activities.map((activity, index) => {
                 const Icon = activity.icon
@@ -351,20 +423,29 @@ const LeadProfileSidebar = ({
                     <div
                       className={cn(
                         "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center",
-                        activity.status === "completed" ? "bg-green-100" : "bg-gray-100",
+                        activity.status === "completed"
+                          ? "bg-green-100 dark:bg-green-900/20"
+                          : "bg-gray-100 dark:bg-gray-800",
                       )}
                     >
                       <Icon
-                        className={cn("h-4 w-4", activity.status === "completed" ? "text-green-600" : "text-gray-500")}
+                        className={cn(
+                          "h-4 w-4",
+                          activity.status === "completed"
+                            ? "text-green-600 dark:text-green-400"
+                            : "text-gray-500 dark:text-gray-400",
+                        )}
                       />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h5 className="font-medium text-sm">{activity.title}</h5>
+                        <h5 className="font-medium text-sm text-gray-900 dark:text-gray-100">{activity.title}</h5>
                         {activity.time && <span className="text-xs text-muted-foreground">{activity.time}</span>}
                       </div>
                       <p className="text-sm text-muted-foreground">{activity.message}</p>
-                      {index < activities.length - 1 && <div className="w-px h-4 bg-gray-200 ml-4 mt-2"></div>}
+                      {index < activities.length - 1 && (
+                        <div className="w-px h-4 bg-gray-200 dark:bg-gray-700 ml-4 mt-2"></div>
+                      )}
                     </div>
                   </div>
                 )
@@ -380,6 +461,15 @@ const LeadProfileSidebar = ({
 export function LeadsPage() {
   const [selectedLead, setSelectedLead] = useState<(typeof leadsData)[0] | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleLeadClick = (lead: (typeof leadsData)[0]) => {
     setSelectedLead(lead)
@@ -391,76 +481,86 @@ export function LeadsPage() {
     setTimeout(() => setSelectedLead(null), 300) // Wait for animation to complete
   }
 
+  if (isLoading) {
+    return (
+      <div className="pt-8 px-4 py-1">
+        <LeadsTableSkeleton />
+      </div>
+    )
+  }
+
   return (
     <div className="pt-8 px-4 py-1">
-      
-        {/* Leads Table */}
-        <Card className="">
-          <div className="">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b">
-                <tr>
-                  <th className="text-left p-4 font-medium text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      Name
-                      <ChevronDown className="h-4 w-4" />
-                    </div>
-                  </th>
-                  <th className="text-left p-4 font-medium text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      Campaign Name
-                      <ChevronDown className="h-4 w-4" />
-                    </div>
-                  </th>
-                  <th className="text-left p-4 font-medium text-sm text-muted-foreground">Activity</th>
-                  <th className="text-left p-4 font-medium text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      Status
-                      <ChevronDown className="h-4 w-4" />
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {leadsData.map((lead) => (
-                  <tr key={lead.id} className="border-b hover:bg-gray-50 transition-colors">
-                    <td className="p-4">
-                      <div
-                        className="flex items-center gap-3 cursor-pointer hover:text-blue-600 transition-colors"
-                        onClick={() => handleLeadClick(lead)}
-                      >
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage src={lead.avatar || "/placeholder.svg"} alt={lead.name} />
-                          <AvatarFallback>
-                            {lead.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="font-medium">{lead.name}</div>
-                          <div className="text-sm text-muted-foreground truncate max-w-xs">{lead.title}</div>
-                        </div>
+      {/* Leads Table */}
+      <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800">
+        <div className="">
+          <table className="w-full">
+            <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+              <tr>
+                <th className="text-left p-4 font-medium text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    Name
+                    <ChevronDown className="h-4 w-4" />
+                  </div>
+                </th>
+                <th className="text-left p-4 font-medium text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    Campaign Name
+                    <ChevronDown className="h-4 w-4" />
+                  </div>
+                </th>
+                <th className="text-left p-4 font-medium text-sm text-muted-foreground">Activity</th>
+                <th className="text-left p-4 font-medium text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    Status
+                    <ChevronDown className="h-4 w-4" />
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {leadsData.map((lead) => (
+                <tr
+                  key={lead.id}
+                  className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <td className="p-4">
+                    <div
+                      className="flex items-center gap-3 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      onClick={() => handleLeadClick(lead)}
+                    >
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={lead.avatar || "/placeholder.svg"} alt={lead.name} />
+                        <AvatarFallback className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+                          {lead.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-gray-100">{lead.name}</div>
+                        <div className="text-sm text-muted-foreground truncate max-w-xs">{lead.title}</div>
                       </div>
-                    </td>
-                    <td className="p-4 text-sm">{lead.campaign}</td>
-                    <td className="p-4">
-                      {/* Updated ActivityChart to show 4 equal height bars with status-based coloring */}
-                      <ActivityChart status={lead.status} />
-                    </td>
-                    <td className="p-4">
-                      <Badge variant="outline" className={statusConfig[lead.status as keyof typeof statusConfig].color}>
-                        {lead.lastActivity}
-                      </Badge>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-      
+                    </div>
+                  </td>
+                  <td className="p-4 text-sm text-gray-700 dark:text-gray-300">{lead.campaign}</td>
+                  <td className="p-4">
+                    {/* Updated ActivityChart to show 4 equal height bars with status-based coloring */}
+                    <ActivityChart status={lead.status} />
+                  </td>
+                  <td className="p-4">
+                    <Badge variant="outline" className={statusConfig[lead.status as keyof typeof statusConfig].color}>
+                      {lead.lastActivity}
+                    </Badge>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+
       {/* Lead Profile Sidebar */}
       <LeadProfileSidebar lead={selectedLead} isOpen={sidebarOpen} onClose={closeSidebar} />
     </div>
