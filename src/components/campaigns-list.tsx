@@ -6,8 +6,9 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Search, Users, MessageSquare, Plus } from "lucide-react"
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation" // Re-instating the Next.js router
 import { useQuery } from "@tanstack/react-query"
-import type { CampaignWithStats } from "@/db/schema" // Import our new detailed type
+import type { CampaignWithStats } from "@/db/schema"
 
 // This function fetches campaigns with stats from our new API endpoint.
 const fetchCampaignsWithStats = async ({ queryKey }: any): Promise<CampaignWithStats[]> => {
@@ -71,12 +72,13 @@ export function CampaignsList() {
   const [activeTab, setActiveTab] = useState("All Campaigns")
   const [inputValue, setInputValue] = useState("")
   const [debouncedSearch, setDebouncedSearch] = useState("")
+  const router = useRouter(); // Initialize the router
 
   // Debouncing effect for the search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(inputValue);
-    }, 800); // 800ms delay
+    }, 500); // 500ms delay
 
     return () => {
       clearTimeout(handler);
@@ -90,8 +92,8 @@ export function CampaignsList() {
   });
 
   const handleCampaignClick = (campaignId: number, campaignName: string) => {
-    // Using window.location for navigation to avoid router dependency issues.
-    window.location.href = `/campaign/${campaignName}?name=${encodeURIComponent(campaignName)}`;
+    // Using the Next.js router for client-side navigation
+    router.push(`/campaign/${campaignId}?name=${encodeURIComponent(campaignName)}`);
   }
 
   if (isLoading) {
