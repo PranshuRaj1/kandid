@@ -23,12 +23,15 @@ import { useSidebarStore } from "@/lib/store/sidebar-store"
 import { useThemeStore } from "@/lib/store/theme-store"
 import Image from "next/image"
 import { useRouter, usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export function Sidebar() {
   const { isOpen } = useSidebarStore()
   const { isDark, toggleTheme } = useThemeStore()
   const router = useRouter()
   const pathname = usePathname()
+
+  const [isClient, setIsClient] = useState(false)
 
   const isActiveRoute = (route: string) => {
     if (route === "/dashboard") {
@@ -41,9 +44,15 @@ export function Sidebar() {
     router.push(route)
   }
 
+  // When the component mounts, set isClient to true.
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+  const sidebarWidth = isClient && isOpen ? "w-64" : "w-0"
+
   return (
     <div
-      className={`${isOpen ? "w-64" : "w-0"} h-full bg-white dark:bg-gray-900 border-r border-gray-200 rounded-xl dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0`}
+      className={`${sidebarWidth} h-full bg-white dark:bg-gray-900 border-r border-gray-200 rounded-xl dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0`}
     >
       {/* Header */}
       <div className="p-3 border-b border-gray-100 dark:border-gray-700 flex-shrink-0 ">
