@@ -78,7 +78,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   
 
   return (
-    <Card className="w-full shadow-lg border-0">
+    <Card className="w-full shadow-lg border-0 pt-10 pb-10">
       <CardHeader className="text-center pb-6">
         <CardTitle className="text-2xl font-semibold text-gray-900">Continue with an account</CardTitle>
         <p className="text-gray-500 mt-2">You must log in or register to continue.</p>
@@ -88,7 +88,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         <Button
         type="button"
           variant="outline"
-          className="w-full h-12 border-gray-200 hover:bg-gray-50 bg-transparent"
+          className="w-full h-12 border-gray-200 cursor-pointer hover:bg-gray-50 bg-transparent"
           onClick={signInWithGoogle}
           disabled={isLoading}
         >
@@ -137,7 +137,7 @@ const handleSubmit = async (e: React.FormEvent) => {
           {/* Error Message Display */}
           {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
-          <Button type="submit" className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white" disabled={isLoading}>
+          <Button type="submit" className="w-full h-12 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white" disabled={isLoading}>
             <Mail className="w-4 h-4 mr-2" />
             Login with Email
           </Button>
@@ -145,7 +145,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
         {/* Other elements remain the same */}
         <div className="text-center pt-4">
-          <button onClick={onSwitchToRegister} className="text-gray-600 hover:text-gray-800 underline">
+          <button onClick={onSwitchToRegister} className=" cursor-pointer text-gray-600 hover:text-gray-800 underline">
             New User? Create New Account
           </button>
         </div>

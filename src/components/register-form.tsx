@@ -48,7 +48,7 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   }
 
   return (
-    <Card className="w-full shadow-lg border-0">
+    <Card className="w-full shadow-lg border-0 pt-5 pb-5">
       <CardHeader className="pb-6">
         <div className="flex items-center mb-4">
           <button onClick={onSwitchToLogin} className="flex items-center text-gray-600 hover:text-gray-800">
