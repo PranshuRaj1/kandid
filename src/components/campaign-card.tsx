@@ -1,14 +1,25 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { ChevronDown } from "lucide-react"
-import type { Campaign } from "@/db/schema" // Import the Campaign type from your schema file
+import { useQuery } from "@tanstack/react-query"
+import type { Campaign } from "@/db/schema" // Use your actual schema path
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
-// The CampaignStatus type is derived from the schema, ensuring type safety.
+// Type for CampaignStatus, derived from the schema for type safety.
 type CampaignStatus = Campaign['status'];
+
+// A dedicated function to fetch campaigns from the API.
+// This will be used by Tanstack Query.
+const fetchCampaigns = async (): Promise<Campaign[]> => {
+  const response = await fetch('/api/campaigns');
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
 
 function CampaignSkeleton() {
   return (
@@ -30,56 +41,37 @@ function CampaignSkeleton() {
 }
 
 export function CampaignsComponent() {
-  const [selectedCampaign, setSelectedCampaign] = useState<string>("All Campaigns")
-  const [isLoading, setIsLoading] = useState(true) // Start with loading state true
-  const [campaigns, setCampaigns] = useState<Campaign[]>([])
-  const [error, setError] = useState<string | null>(null)
+  const [selectedCampaign, setSelectedCampaign] = useState<string>("All Campaigns");
 
-  useEffect(() => {
-    // Fetches campaign data from the API endpoint
-    const fetchCampaigns = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch('/api/campaigns');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data: Campaign[] = await response.json();
-        setCampaigns(data);
-      } catch (error) {
-        console.error("Failed to fetch campaigns:", error);
-        setError("Failed to load campaigns. Please try again later.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // useQuery handles fetching, caching, loading, and error states.
+  const { data: campaigns = [], isLoading, error } = useQuery<Campaign[]>({
+    queryKey: ['campaigns'], // Unique key for this query
+    queryFn: fetchCampaigns,    // The function that will fetch the data
+  });
 
-    fetchCampaigns();
-  }, []); // Empty dependency array ensures this effect runs only once on component mount
-
+  // Filtering logic remains the same, but now uses data from useQuery.
   const filteredCampaigns =
     selectedCampaign === "All Campaigns"
       ? campaigns
       : campaigns.filter((campaign) => campaign.name === selectedCampaign)
 
-  // Determines badge color based on campaign status
+  // Function to determine the badge color based on campaign status.
   const getStatusBadgeColor = (status: CampaignStatus) => {
     switch (status) {
       case "Active":
-        return "bg-green-100 text-sm text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
+        return "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
       case "Draft":
-        return "bg-gray-100 text-sm text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
+        return "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
       case "Paused":
-        return "bg-yellow-100 text-sm text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800"
+        return "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800"
       case "Completed":
-        return "bg-blue-100 text-sm text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800"
+        return "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800"
       default:
-        return "bg-gray-100 text-sm text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
+        return "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
     }
   }
 
-  // Render loading skeleton while fetching data
+  // Render the skeleton UI while data is being fetched.
   if (isLoading) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
@@ -88,27 +80,25 @@ export function CampaignsComponent() {
     )
   }
   
-  // Render error message if fetching fails
+  // Render an error message if the data fetching fails.
   if (error) {
       return (
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-red-200 dark:border-red-700 p-6 text-center text-red-600 dark:text-red-400">
-            {error}
+            Failed to load campaigns.
         </div>
       )
   }
 
-  // Render the main component with campaign data
+  // Render the main component with the fetched campaign data.
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-      {/* Header with dropdown */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-sm font-medium text-gray-900 dark:text-white">Campaigns</h1>
-
+        <h1 className="text-xl font-medium text-gray-900 dark:text-white">Campaigns</h1>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="min-w-[80px] justify-between text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 bg-transparent dark:bg-transparent"
+              className="min-w-[160px] justify-between text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 bg-transparent dark:bg-transparent"
             >
               {selectedCampaign}
               <ChevronDown className="h-4 w-4 opacity-50" />
@@ -124,7 +114,6 @@ export function CampaignsComponent() {
             >
               All Campaigns
             </DropdownMenuItem>
-            {/* Populate dropdown from fetched campaigns */}
             {campaigns.map((campaign) => (
               <DropdownMenuItem
                 key={campaign.id}
@@ -138,13 +127,11 @@ export function CampaignsComponent() {
         </DropdownMenu>
       </div>
 
-      {/* Campaign list */}
-      <div className="space-y-1 overflow-y-auto max-h-64">
-        {/* Render filtered campaigns from state */}
+      <div className="space-y-1 overflow-y-auto max-h-64 pr-2">
         {filteredCampaigns.map((campaign) => (
           <div
             key={campaign.id}
-            className="flex items-center text-sm justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+            className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
           >
             <div className="font-medium text-gray-900 dark:text-white">{campaign.name}</div>
             <div
@@ -156,7 +143,6 @@ export function CampaignsComponent() {
         ))}
       </div>
 
-      {/* Display message if no campaigns are found */}
       {filteredCampaigns.length === 0 && !isLoading && (
         <div className="text-center py-8 text-gray-500 dark:text-gray-400">No campaigns found</div>
       )}
