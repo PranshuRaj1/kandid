@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useMemo, useState , memo} from "react"
 import { ChevronDown } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import type { Campaign } from "@/db/schema" // Use your actual schema path
@@ -40,7 +40,7 @@ function CampaignSkeleton() {
   )
 }
 
-export function CampaignsComponent() {
+export const CampaignsComponent = memo(function CampaignsComponent(){
   const [selectedCampaign, setSelectedCampaign] = useState<string>("All Campaigns");
 
   // useQuery handles fetching, caching, loading, and error states.
@@ -50,10 +50,20 @@ export function CampaignsComponent() {
   });
 
   // Filtering logic remains the same, but now uses data from useQuery.
-  const filteredCampaigns =
-    selectedCampaign === "All Campaigns"
-      ? campaigns
-      : campaigns.filter((campaign) => campaign.name === selectedCampaign)
+  // 2. Memoize the filtered list with useMemo.
+  // This calculation now only runs when `campaigns` or `selectedCampaign` changes.
+  const filteredCampaigns = useMemo(() => {
+    if (selectedCampaign === "All Campaigns") {
+      return campaigns;
+    }
+    return campaigns.filter((campaign) => campaign.name === selectedCampaign);
+  }, [campaigns, selectedCampaign]);
+
+  // 3. Memoize event handlers with useCallback to prevent re-creation.
+  const handleCampaignSelect = useCallback((name: string) => {
+    setSelectedCampaign(name);
+  }, []);
+
 
   // Function to determine the badge color based on campaign status.
   const getStatusBadgeColor = (status: CampaignStatus) => {
@@ -70,6 +80,8 @@ export function CampaignsComponent() {
         return "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
     }
   }
+
+  
 
   // Render the skeleton UI while data is being fetched.
   if (isLoading) {
@@ -109,7 +121,7 @@ export function CampaignsComponent() {
             className="min-w-[160px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
           >
             <DropdownMenuItem
-              onClick={() => setSelectedCampaign("All Campaigns")}
+              onClick={() => handleCampaignSelect("All Campaigns")}
               className="cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               All Campaigns
@@ -117,7 +129,7 @@ export function CampaignsComponent() {
             {campaigns.map((campaign) => (
               <DropdownMenuItem
                 key={campaign.id}
-                onClick={() => setSelectedCampaign(campaign.name)}
+                onClick={() => handleCampaignSelect(campaign.name)}
                 className="cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 {campaign.name}
@@ -148,5 +160,5 @@ export function CampaignsComponent() {
       )}
     </div>
   )
-}
+})
 

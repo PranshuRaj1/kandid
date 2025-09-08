@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, memo, useMemo, useCallback } from "react"
 import { ChevronDown, Clock, Send, UserX } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -139,7 +139,7 @@ function RecentActivitySkeleton() {
   )
 }
 
-export function RecentActivityComponent() {
+export const RecentActivityComponent = memo(function RecentActivityComponent() {
   const [sortBy, setSortBy] = useState("Most Recent")
   const [isLoading, setIsLoading] = useState(true)
   const [activities, setActivities] = useState<Activity[]>([])
@@ -154,6 +154,24 @@ export function RecentActivityComponent() {
     // Cleanup function to clear the timer if the component unmounts
     return () => clearTimeout(timer)
   }, []) // Empty dependency array ensures this effect runs only once on mount
+
+  // 2. Memoize the sorted list.
+  // This logic now runs only when 'activities' or 'sortBy' changes.
+  const sortedActivities = useMemo(() => {
+    const sorted = [...activities]; // Create a copy to avoid mutating state
+    if (sortBy === "Oldest First") {
+      return sorted.reverse(); // A simple reverse for this example
+    }
+    if (sortBy === "By Campaign") {
+      return sorted.sort((a, b) => a.campaign.localeCompare(b.campaign));
+    }
+    // Default is "Most Recent"
+    return sorted;
+  }, [activities, sortBy]);
+
+  const handleSortChange = useCallback((sortValue: string) => {
+    setSortBy(sortValue);
+  }, []);
 
   const getStatusBadge = (status: Activity["status"]) => {
     switch (status.type) {
@@ -222,19 +240,19 @@ export function RecentActivityComponent() {
             className="min-w-[140px] bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
           >
             <DropdownMenuItem
-              onClick={() => setSortBy("Most Recent")}
+              onClick={() => handleSortChange("Most Recent")}
               className="cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               Most Recent
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => setSortBy("Oldest First")}
+              onClick={() => handleSortChange("Oldest First")}
               className="cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               Oldest First
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => setSortBy("By Campaign")}
+              onClick={() => handleSortChange("By Campaign")}
               className="cursor-pointer text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
               By Campaign
@@ -253,7 +271,7 @@ export function RecentActivityComponent() {
       {/* Activity list */}
       <div className="overflow-y-auto max-h-[39.5rem]">
         <div className="space-y-1">
-          {activities.map((activity) => (
+          {sortedActivities.map((activity) => (
             <div key={activity.id} className="grid grid-cols-3 text-xs gap-4 items-center py-3">
               {/* Lead info */}
               <div className="flex items-center text-xs gap-3">
@@ -283,4 +301,4 @@ export function RecentActivityComponent() {
       </div>
     </div>
   )
-}
+})

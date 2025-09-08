@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useState, useEffect } from "react"
+import  { useState, useEffect ,memo} from "react"
 
 // 1. Define a type for the account object for TypeScript
 type LinkedInAccount = {
@@ -102,7 +102,7 @@ function LinkedInAccountSkeleton() {
   )
 }
 
-export function LinkedInAccountsComponent() {
+export const LinkedInAccountsComponent = memo(function LinkedInAccountsComponent() {
   // 2. Initialize isLoading to true and create a state for the accounts
   const [isLoading, setIsLoading] = useState(true)
   const [accounts, setAccounts] = useState<LinkedInAccount[]>([])
@@ -194,4 +194,4 @@ export function LinkedInAccountsComponent() {
       </div>
     </div>
   )
-}
+})
