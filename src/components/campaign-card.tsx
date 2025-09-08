@@ -91,7 +91,7 @@ export function CampaignsComponent() {
 
   // Render the main component with the fetched campaign data.
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border h-[22.75rem] border-gray-200 dark:border-gray-700 p-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-medium text-gray-900 dark:text-white">Campaigns</h1>
         <DropdownMenu>
