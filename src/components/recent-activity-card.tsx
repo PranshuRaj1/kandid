@@ -14,7 +14,7 @@ const mockActivities = [
     lead: {
       name: "Om Satyarthy",
       title: "Regional Head",
-      avatar: "/professional-man-headshot-suit.jpg",
+      avatar: "/professional-man-headshot-blue-shirt.jpg",
     },
     campaign: "Gynoveda",
     status: { type: "pending", text: "Pending Approval" },
@@ -24,7 +24,7 @@ const mockActivities = [
     lead: {
       name: "Dr. Bhuvaneshwari",
       title: "Fertility & Women's Health + A...",
-      avatar: "/professional-woman-doctor.png",
+      avatar: "/professional-woman-ayurveda-avatar.jpg",
     },
     campaign: "Gynoveda",
     status: { type: "sent", text: "Sent 7 mins ago" },
@@ -44,7 +44,7 @@ const mockActivities = [
     lead: {
       name: "Dilbag Singh",
       title: "Manager Marketing & Communicat...",
-      avatar: "/professional-man-headshot-glasses.png",
+      avatar: "/professional-man-headshot-blue-shirt.jpg",
     },
     campaign: "Gynoveda",
     status: { type: "sent", text: "Sent 7 mins ago" },
@@ -54,7 +54,7 @@ const mockActivities = [
     lead: {
       name: "Vanshy Jain",
       title: "Ayurveda||primary infertility|...",
-      avatar: "/professional-woman-headshot.png",
+      avatar: "/professional-man-headshot-beard.png",
     },
     campaign: "Gynoveda",
     status: { type: "sent", text: "Sent 7 mins ago" },
@@ -64,7 +64,7 @@ const mockActivities = [
     lead: {
       name: "Sunil Pal",
       title: "Helping Fashion & Lifestyle Br...",
-      avatar: "/professional-man-headshot-casual.jpg",
+      avatar: "/professional-man-headshot-blue-shirt.jpg",
     },
     campaign: "Digi Sidekick",
     status: { type: "pending", text: "Pending Approval" },
@@ -74,7 +74,7 @@ const mockActivities = [
     lead: {
       name: "Utkarsh K.",
       title: "Airbnb Host | Ex-The Skin Stor...",
-      avatar: "/professional-man-headshot-smile.jpg",
+      avatar: "/professional-man-headshot-beard.png",
     },
     campaign: "The skin story",
     status: { type: "no-contact", text: "Do Not Contact" },
