@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Logout } from "@/components/logout"
 import {
   Home,
   Users,
@@ -18,20 +19,20 @@ import {
   Moon,
   ChevronDown,
   ChevronUp,
+  User,
 } from "lucide-react"
 import { useSidebarStore } from "@/lib/store/sidebar-store"
 import { useThemeStore } from "@/lib/store/theme-store"
 import Image from "next/image"
 import { useRouter, usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 export function Sidebar() {
   const { isOpen } = useSidebarStore()
   const { isDark, toggleTheme } = useThemeStore()
   const router = useRouter()
   const pathname = usePathname()
-
-  const [isClient, setIsClient] = useState(false)
+  const [isLogoutDrawerOpen, setIsLogoutDrawerOpen] = useState(false)
 
   const isActiveRoute = (route: string) => {
     if (route === "/dashboard") {
@@ -44,15 +45,13 @@ export function Sidebar() {
     router.push(route)
   }
 
-  // When the component mounts, set isClient to true.
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-  const sidebarWidth = isClient && isOpen ? "w-64" : "w-0"
+  const toggleLogoutDrawer = () => {
+    setIsLogoutDrawerOpen(!isLogoutDrawerOpen)
+  }
 
   return (
     <div
-      className={`${sidebarWidth} h-full bg-white dark:bg-gray-900 border-r border-gray-200 rounded-xl dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0`}
+      className={`${isOpen ? "w-64" : "w-0"} h-full bg-white dark:bg-gray-900 border-r border-gray-200 rounded-xl dark:border-gray-700 flex flex-col transition-all duration-300 ease-in-out overflow-hidden flex-shrink-0 relative`}
     >
       {/* Header */}
       <div className="p-3 border-b border-gray-100 dark:border-gray-700 flex-shrink-0 ">
@@ -95,7 +94,7 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 overflow-y-hidden">
+      <div className="flex-1 min-h-0">
         {/* Overview Section */}
         <div className="p-3">
           <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 whitespace-nowrap">
@@ -104,7 +103,7 @@ export function Sidebar() {
           <nav className="space-y-1">
             <Button
               variant="ghost"
-              className={`w-full justify-start cursor-pointer ${
+              className={`w-full justify-start ${
                 isActiveRoute("/dashboard")
                   ? "bg-blue-50 dark:bg-blue-900/20 cursor-pointer text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
                   : "text-gray-700 dark:text-gray-300 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -128,27 +127,13 @@ export function Sidebar() {
             </Button>
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
-              onClick={() => handleNavigation("/campaign")}
->
+              className="w-full cursor-pointer justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+            >
               <Megaphone className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">Campaign</span>
             </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-            >
-              <Mail className="w-4 h-4 mr-3 flex-shrink-0" />
-              <span className="whitespace-nowrap">Messages</span>
-              <Badge className="ml-auto bg-blue-600 text-white text-xs px-2 py-0.5 flex-shrink-0">10+</Badge>
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-            >
-              <Building2 className="w-4 h-4 mr-3 flex-shrink-0" />
-              <span className="whitespace-nowrap">LinkedIn Accounts</span>
-            </Button>
+           
+            
           </nav>
         </div>
 
@@ -160,7 +145,7 @@ export function Sidebar() {
           <nav className="space-y-1">
             <Button
               variant="ghost"
-              className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="w-full cursor-pointer   justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               <Settings className="w-4 h-4 mr-3 flex-shrink-0" />
               <span className="whitespace-nowrap">Setting & Billing</span>
@@ -168,12 +153,31 @@ export function Sidebar() {
           </nav>
         </div>
 
-        {/* Admin Panel Section */}
         
       </div>
 
       {/* Bottom Icons */}
-      <div className="p-3 border-t border-gray-100 dark:border-gray-700 flex-shrink-0">
+      <div className="p-3 border-t border-gray-100 dark:border-gray-700 flex-shrink-0 relative">
+        {isLogoutDrawerOpen && (
+          <div className="absolute bottom-full left-0 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-t-lg shadow-lg animate-in slide-in-from-bottom-2 duration-200">
+            <div className="p-2">
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+                onClick={() => {
+                  setIsLogoutDrawerOpen(false)
+                }}
+              >
+               
+                
+              </Button>
+              <div onClick={() => setIsLogoutDrawerOpen(false)}>
+                <Logout />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-center gap-4 mb-4">
           <Button
             variant="ghost"
@@ -217,7 +221,16 @@ export function Sidebar() {
               <div className="text-xs text-gray-500 dark:text-gray-400 truncate">bhavya@kandid.ai</div>
             </div>
           </div>
-          <ChevronUp className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+          <Button
+            variant="ghost"
+            size="sm"
+            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+            onClick={toggleLogoutDrawer}
+          >
+            <ChevronUp
+              className={`w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform duration-200 ${isLogoutDrawerOpen ? "rotate-180" : ""}`}
+            />
+          </Button>
         </div>
       </div>
     </div>
