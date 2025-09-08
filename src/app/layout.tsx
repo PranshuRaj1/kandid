@@ -6,6 +6,8 @@ import { LayoutWrapper } from "@/components/sidebar-wrapper"
 import { CustomBreadcrumb } from "@/components/breadcrumb-wrapper"
 import App from "next/app"
 import { AppHeader } from "@/components/AppHeader"
+import { Providers } from "@/provider"
+
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -14,11 +16,14 @@ export const metadata: Metadata = {
   description: "AI",
 }
 
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -26,8 +31,9 @@ export default function RootLayout({
           <div>
             <div className="flex-1 flex flex-col overflow-hidden ">  
               <AppHeader />
-              {children}
-              
+              <Providers>
+                {children}
+              </Providers>
             </div>
            
           </div>
