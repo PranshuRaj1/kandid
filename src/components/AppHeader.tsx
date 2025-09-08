@@ -24,7 +24,7 @@ export function AppHeader() {
 
   if(doWeRender) {
     return (
-    <header className="flex items-center p-2  flex-shrink-0">
+    <header suppressHydrationWarning className="flex items-center p-2  flex-shrink-0 ">
       {/* 1. Always-visible toggle button */}
       <Button variant="ghost" size="sm" onClick={toggle} className="mr-2" aria-label="Toggle sidebar">
         {isOpen ? (

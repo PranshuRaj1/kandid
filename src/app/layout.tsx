@@ -5,6 +5,7 @@ import "./globals.css"
 import { LayoutWrapper } from "@/components/sidebar-wrapper"
 import { AppHeader } from "@/components/AppHeader"
 import { Providers } from "@/provider"
+import ThemeInitializer from "@/components/theme-initialisor"
 
 
 
@@ -24,13 +25,16 @@ export default function RootLayout({
 }>) {
   
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <ThemeInitializer />
         <LayoutWrapper>
           <div>
             <div className="flex-1 flex flex-col overflow-hidden ">  
+              
               <AppHeader />
               <Providers>
+                
                 {children}
               </Providers>
             </div>
