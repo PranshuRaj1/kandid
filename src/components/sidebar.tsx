@@ -1,6 +1,5 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Logout } from "@/components/logout"
@@ -8,18 +7,16 @@ import {
   Home,
   Users,
   Megaphone,
-  Mail,
-  Building2,
+  
   Settings,
-  Activity,
-  FileText,
+  
   MessageSquare,
   Link,
   Headphones,
   Moon,
   ChevronDown,
   ChevronUp,
-  User,
+ 
 } from "lucide-react"
 import { useSidebarStore } from "@/lib/store/sidebar-store"
 import { useThemeStore } from "@/lib/store/theme-store"
@@ -127,6 +124,7 @@ export function Sidebar() {
             </Button>
             <Button
               variant="ghost"
+              onClick={() => handleNavigation("/campaign")}
               className="w-full cursor-pointer justify-start text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               <Megaphone className="w-4 h-4 mr-3 flex-shrink-0" />

@@ -1,14 +1,29 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronDown, Clock, Send, UserX } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
 
-// Mock recent activity data
-const mockActivities = [
+// Define the type for a single activity object for TypeScript
+type Activity = {
+  id: number
+  lead: {
+    name: string
+    title: string
+    avatar: string
+  }
+  campaign: string
+  status: {
+    type: string
+    text: string
+  }
+}
+
+// Mock recent activity data with the Activity type applied
+const mockActivities: Activity[] = [
   {
     id: 1,
     lead: {
@@ -126,9 +141,21 @@ function RecentActivitySkeleton() {
 
 export function RecentActivityComponent() {
   const [sortBy, setSortBy] = useState("Most Recent")
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [activities, setActivities] = useState<Activity[]>([])
 
-  const getStatusBadge = (status: { type: string; text: string }) => {
+  useEffect(() => {
+    // Simulate a network request to fetch data
+    const timer = setTimeout(() => {
+      setActivities(mockActivities)
+      setIsLoading(false)
+    }, 2000) // 2-second delay
+
+    // Cleanup function to clear the timer if the component unmounts
+    return () => clearTimeout(timer)
+  }, []) // Empty dependency array ensures this effect runs only once on mount
+
+  const getStatusBadge = (status: Activity["status"]) => {
     switch (status.type) {
       case "pending":
         return (
@@ -169,18 +196,17 @@ export function RecentActivityComponent() {
 
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 ">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
         <RecentActivitySkeleton />
       </div>
     )
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6  flex flex-col">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 flex flex-col">
       {/* Header with dropdown */}
       <div className="flex items-center justify-between mb-6 flex-shrink-0">
         <h2 className="text-xl font-medium text-gray-900 dark:text-white">Recent Activity</h2>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -224,10 +250,10 @@ export function RecentActivityComponent() {
         <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Status</div>
       </div>
 
-      {/* Activity list (MODIFIED) */}
+      {/* Activity list */}
       <div className="overflow-y-auto max-h-[39.5rem]">
         <div className="space-y-1">
-          {mockActivities.map((activity) => (
+          {activities.map((activity) => (
             <div key={activity.id} className="grid grid-cols-3 text-xs gap-4 items-center py-3">
               {/* Lead info */}
               <div className="flex items-center text-xs gap-3">

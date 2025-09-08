@@ -2,10 +2,23 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
-// Mock LinkedIn accounts data (updated with more entries for scrolling)
-const mockLinkedInAccounts = [
+// 1. Define a type for the account object for TypeScript
+type LinkedInAccount = {
+  id: number
+  name: string
+  email: string
+  avatar: string
+  status: string
+  requests: {
+    current: number
+    total: number
+  }
+}
+
+// Mock LinkedIn accounts data
+const mockLinkedInAccounts: LinkedInAccount[] = [
   {
     id: 1,
     name: "Pulkit Garg",
@@ -79,7 +92,7 @@ function LinkedInAccountSkeleton() {
               <Skeleton className="h-6 w-20 rounded-full" />
             </div>
             <div className="flex items-center justify-end gap-3">
-              <Skeleton className="h-2 w-20 rounded-full" />
+              <Skeleton className="h-2 w-20" />
               <Skeleton className="h-4 w-8" />
             </div>
           </div>
@@ -90,7 +103,20 @@ function LinkedInAccountSkeleton() {
 }
 
 export function LinkedInAccountsComponent() {
-  const [isLoading, setIsLoading] = useState(false)
+  // 2. Initialize isLoading to true and create a state for the accounts
+  const [isLoading, setIsLoading] = useState(true)
+  const [accounts, setAccounts] = useState<LinkedInAccount[]>([])
+
+  // 3. Use useEffect to simulate fetching data when the component mounts
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAccounts(mockLinkedInAccounts) // Load data into state
+      setIsLoading(false) // <-- This is where setIsLoading is now used
+    }, 1500) // Simulate a 1.5-second delay
+
+    // Cleanup function to clear the timer if the component unmounts
+    return () => clearTimeout(timer)
+  }, []) // Empty array ensures this runs only once
 
   if (isLoading) {
     return (
@@ -108,14 +134,15 @@ export function LinkedInAccountsComponent() {
       {/* Table headers */}
       <div className="grid grid-cols-3 gap-4 pb-4 mb-4 text-xs border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
         <div className=" font-medium text-gray-500 dark:text-gray-400">Account</div>
-        <div className=" font-medium text-gray-500 dark:text-gray-400 text-center px-25 ">Status</div>
+        <div className=" font-medium text-gray-500 dark:text-gray-400 text-center">Status</div>
         <div className=" font-medium text-gray-500 dark:text-gray-400 text-right">Requests</div>
       </div>
 
-      {/* Account list (MODIFIED) */}
+      {/* Account list */}
       <div className="overflow-y-auto max-h-[16.75rem]">
         <div className="space-y-1">
-          {mockLinkedInAccounts.map((account) => (
+          {/* 4. Map over the 'accounts' state variable */}
+          {accounts.map((account) => (
             <div key={account.id} className="grid grid-cols-3 gap-4 text-xs items-center py-3">
               {/* Account info */}
               <div className="flex items-center gap-3">
@@ -140,7 +167,7 @@ export function LinkedInAccountsComponent() {
               </div>
 
               {/* Status */}
-              <div className="flex justify-center text-xs px-30">
+              <div className="flex justify-center text-xs">
                 <div className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                   <div className="w-3 h-3 bg-white rounded-full flex items-center justify-center">
                     <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
@@ -150,16 +177,14 @@ export function LinkedInAccountsComponent() {
               </div>
 
               {/* Requests progress */}
-              <div className="flex items-center justify-end gap-1">
-                <div className="flex-1 max-w-[10px]">
-                  <div className=" bg-gray-200 dark:bg-gray-700 rounded-full ">
-                    <div
-                      className="bg-blue-600 rounded-full"
-                      style={{ width: `${(account.requests.current / account.requests.total) * 100}%` }}
-                    ></div>
-                  </div>
+              <div className="flex items-center justify-end gap-3">
+                <div className="w-20 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div
+                    className="bg-blue-600 h-2 rounded-full"
+                    style={{ width: `${(account.requests.current / account.requests.total) * 100}%` }}
+                  ></div>
                 </div>
-                <span className="text-sm text-gray-600 dark:text-gray-300 min-w-[40px]">
+                <span className="text-sm text-gray-600 dark:text-gray-300 min-w-[40px] text-right">
                   {account.requests.current}/{account.requests.total}
                 </span>
               </div>

@@ -1,5 +1,4 @@
-import { LayoutWrapper } from "@/components/sidebar-wrapper"
-import { AppHeader } from "@/components/AppHeader"
+
 import { CampaignDetails } from "@/components/campaign-details"
 
 interface CampaignPageProps {

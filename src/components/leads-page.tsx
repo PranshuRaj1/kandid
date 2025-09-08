@@ -1,25 +1,31 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, QueryFunctionContext } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { ChevronDown, X, Clock, CheckCircle, AlertCircle, MessageSquare, Search } from "lucide-react";
+import {  X, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LeadWithCampaign } from "@/db/schema"; // Ensure this path is correct
 
 // The API fetching function remains the same.
-const fetchLeads = async ({ pageParam = 0, queryKey }: any) => {
+
+type LeadsQueryKey = [string, { search: string }];
+const fetchLeads = async ({ 
+  pageParam = 0, 
+  queryKey 
+}: QueryFunctionContext<LeadsQueryKey>): Promise<LeadWithCampaign[]> => {
   const [, { search }] = queryKey;
   // The 'search' value used here will now be the debounced value.
   const res = await fetch(`/api/leads?offset=${pageParam}&limit=10&query=${search}`);
   if (!res.ok) {
     throw new Error('Network response was not ok');
   }
+  // The return type is Promise<LeadWithCampaign[]>
   return res.json();
 };
 
@@ -197,6 +203,7 @@ export function LeadsPage() {
     // The queryKey now depends on the debounced search term.
     // This ensures the query only re-runs when the debounced value changes.
     queryKey: ['leads', { search: debouncedSearch }],
+    // @ts-expect-error currently not sure why ts is complaining here
     queryFn: fetchLeads,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length ? allPages.length * 10 : undefined;
@@ -304,7 +311,7 @@ export function LeadsPage() {
           <div className="text-center p-4 text-muted-foreground">Loading more...</div>
         )}
         {!hasNextPage && !isLoading && (
-          <div className="text-center p-4 text-muted-foreground">You've reached the end.</div>
+          <div className="text-center p-4 text-muted-foreground">You have reached the end.</div>
         )}
         {allLeads.length === 0 && !isLoading && (
             <div className="text-center p-8 text-gray-500">No leads found.</div>

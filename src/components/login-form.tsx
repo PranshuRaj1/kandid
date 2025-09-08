@@ -2,13 +2,8 @@
 
 import type React from "react"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { z } from "zod"
-import { toast } from "sonner"
 import { signIn } from "../../server/user"
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -20,13 +15,8 @@ interface LoginFormProps {
   onSwitchToRegister: () => void
 }
 
-const formSchema = z.object({
-  email: z.email(),
-  password: z.string().min(8),
-});
-
 export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
-  const router = useRouter()
+  
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -36,16 +26,10 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps) {
  
 const authClient = createAuthClient();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  
 
 const signInWithGoogle = async () => {
-  const data = await authClient.signIn.social({
+  await authClient.signIn.social({
     provider: "google",
     callbackURL: "/"
   });

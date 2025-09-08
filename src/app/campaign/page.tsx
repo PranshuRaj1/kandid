@@ -1,5 +1,3 @@
-import { LayoutWrapper } from "@/components/sidebar-wrapper"
-import { AppHeader } from "@/components/AppHeader"
 import { CampaignsList } from "@/components/campaigns-list"
 
 export default function HomePage() {
