@@ -108,3 +108,5 @@ export const leadsRelations = relations(leads, ({ one }) => ({
     references: [campaigns.id],
   }),
 }));
+
+export type Campaign = typeof campaigns.$inferSelect;

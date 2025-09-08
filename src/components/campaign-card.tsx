@@ -1,22 +1,14 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronDown } from "lucide-react"
+import type { Campaign } from "@/db/schema" // Import the Campaign type from your schema file
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 
-// Mock data based on your schema
-const mockCampaigns = [
-  { id: 1, name: "Just Herbs", status: "Active" as const },
-  { id: 2, name: "Juicy chemistry", status: "Active" as const },
-  { id: 3, name: "Hyugalife 2", status: "Active" as const },
-  { id: 4, name: "Honeyveda", status: "Active" as const },
-  { id: 5, name: "HempStreet", status: "Active" as const },
-  { id: 6, name: "HealthyHey 2", status: "Active" as const },
-]
-
-type CampaignStatus = "Draft" | "Active" | "Paused" | "Completed"
+// The CampaignStatus type is derived from the schema, ensuring type safety.
+type CampaignStatus = Campaign['status'];
 
 function CampaignSkeleton() {
   return (
@@ -39,13 +31,39 @@ function CampaignSkeleton() {
 
 export function CampaignsComponent() {
   const [selectedCampaign, setSelectedCampaign] = useState<string>("All Campaigns")
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true) // Start with loading state true
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Fetches campaign data from the API endpoint
+    const fetchCampaigns = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch('/api/campaigns');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data: Campaign[] = await response.json();
+        setCampaigns(data);
+      } catch (error) {
+        console.error("Failed to fetch campaigns:", error);
+        setError("Failed to load campaigns. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCampaigns();
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   const filteredCampaigns =
     selectedCampaign === "All Campaigns"
-      ? mockCampaigns
-      : mockCampaigns.filter((campaign) => campaign.name === selectedCampaign)
+      ? campaigns
+      : campaigns.filter((campaign) => campaign.name === selectedCampaign)
 
+  // Determines badge color based on campaign status
   const getStatusBadgeColor = (status: CampaignStatus) => {
     switch (status) {
       case "Active":
@@ -61,6 +79,7 @@ export function CampaignsComponent() {
     }
   }
 
+  // Render loading skeleton while fetching data
   if (isLoading) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
@@ -68,7 +87,17 @@ export function CampaignsComponent() {
       </div>
     )
   }
+  
+  // Render error message if fetching fails
+  if (error) {
+      return (
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-red-200 dark:border-red-700 p-6 text-center text-red-600 dark:text-red-400">
+            {error}
+        </div>
+      )
+  }
 
+  // Render the main component with campaign data
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       {/* Header with dropdown */}
@@ -95,7 +124,8 @@ export function CampaignsComponent() {
             >
               All Campaigns
             </DropdownMenuItem>
-            {mockCampaigns.map((campaign) => (
+            {/* Populate dropdown from fetched campaigns */}
+            {campaigns.map((campaign) => (
               <DropdownMenuItem
                 key={campaign.id}
                 onClick={() => setSelectedCampaign(campaign.name)}
@@ -110,6 +140,7 @@ export function CampaignsComponent() {
 
       {/* Campaign list */}
       <div className="space-y-1 overflow-y-auto max-h-64">
+        {/* Render filtered campaigns from state */}
         {filteredCampaigns.map((campaign) => (
           <div
             key={campaign.id}
@@ -125,9 +156,11 @@ export function CampaignsComponent() {
         ))}
       </div>
 
-      {filteredCampaigns.length === 0 && (
+      {/* Display message if no campaigns are found */}
+      {filteredCampaigns.length === 0 && !isLoading && (
         <div className="text-center py-8 text-gray-500 dark:text-gray-400">No campaigns found</div>
       )}
     </div>
   )
 }
+
