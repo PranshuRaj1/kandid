@@ -112,3 +112,4 @@ export const leadsRelations = relations(leads, ({ one }) => ({
 export type Campaign = typeof campaigns.$inferSelect;
 export type Lead = typeof leads.$inferSelect;
 export type LeadWithCampaign = Lead & { campaign: Campaign | null };
+export type CampaignWithStats = Campaign & { totalLeads: number };

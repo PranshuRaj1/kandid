@@ -5,122 +5,19 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Search, Users, MessageSquare, Plus } from "lucide-react"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useQuery } from "@tanstack/react-query"
+import type { CampaignWithStats } from "@/db/schema" // Import our new detailed type
 
-interface Campaign {
-  id: string
-  name: string
-  status: "Active" | "Inactive"
-  totalLeads: number
-  requestSent: number
-  requestAccepted: number
-  requestReplied: number
-  connectionSent: number
-  connectionAccepted: number
+// This function fetches campaigns with stats from our new API endpoint.
+const fetchCampaignsWithStats = async ({ queryKey }: any): Promise<CampaignWithStats[]> => {
+    const [_, { search, status }] = queryKey;
+    const response = await fetch(`/api/campaigns-stats?query=${search}&status=${status}`);
+    if(!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
 }
-
-const mockCampaigns: Campaign[] = [
-  {
-    id: "1",
-    name: "Just Herbs",
-    status: "Active",
-    totalLeads: 20,
-    requestSent: 0,
-    requestAccepted: 20,
-    requestReplied: 0,
-    connectionSent: 0,
-    connectionAccepted: 0,
-  },
-  {
-    id: "2",
-    name: "Juicy chemistry",
-    status: "Active",
-    totalLeads: 11,
-    requestSent: 0,
-    requestAccepted: 11,
-    requestReplied: 0,
-    connectionSent: 0,
-    connectionAccepted: 0,
-  },
-  {
-    id: "3",
-    name: "Hyugalife 2",
-    status: "Active",
-    totalLeads: 19,
-    requestSent: 0,
-    requestAccepted: 19,
-    requestReplied: 0,
-    connectionSent: 0,
-    connectionAccepted: 0,
-  },
-  {
-    id: "4",
-    name: "Honeyveda",
-    status: "Active",
-    totalLeads: 3,
-    requestSent: 0,
-    requestAccepted: 3,
-    requestReplied: 0,
-    connectionSent: 0,
-    connectionAccepted: 0,
-  },
-  {
-    id: "5",
-    name: "HempStreet",
-    status: "Active",
-    totalLeads: 7,
-    requestSent: 0,
-    requestAccepted: 7,
-    requestReplied: 0,
-    connectionSent: 0,
-    connectionAccepted: 0,
-  },
-  {
-    id: "6",
-    name: "HealthyHey 2",
-    status: "Active",
-    totalLeads: 5,
-    requestSent: 0,
-    requestAccepted: 5,
-    requestReplied: 0,
-    connectionSent: 0,
-    connectionAccepted: 0,
-  },
-  {
-    id: "7",
-    name: "Herbal Chakra",
-    status: "Active",
-    totalLeads: 19,
-    requestSent: 0,
-    requestAccepted: 19,
-    requestReplied: 0,
-    connectionSent: 0,
-    connectionAccepted: 0,
-  },
-  {
-    id: "8",
-    name: "Healofy",
-    status: "Active",
-    totalLeads: 14,
-    requestSent: 0,
-    requestAccepted: 14,
-    requestReplied: 0,
-    connectionSent: 0,
-    connectionAccepted: 0,
-  },
-  {
-    id: "9",
-    name: "HealthSense",
-    status: "Active",
-    totalLeads: 2,
-    requestSent: 0,
-    requestAccepted: 2,
-    requestReplied: 0,
-    connectionSent: 0,
-    connectionAccepted: 0,
-  },
-]
 
 function CampaignsTableSkeleton() {
   return (
@@ -140,34 +37,30 @@ function CampaignsTableSkeleton() {
         </div>
         <Skeleton className="h-9 w-80" />
       </div>
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-        <div className="space-y-4">
-          <div className="grid grid-cols-5 gap-4 pb-4">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-4 w-28" />
-          </div>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="grid grid-cols-5 gap-4 items-center py-4">
-              <Skeleton className="h-4 w-32" />
-              <Skeleton className="h-6 w-16 rounded-full" />
-              <div className="flex items-center">
-                <Skeleton className="h-4 w-4 mr-2" />
-                <Skeleton className="h-4 w-6" />
-              </div>
-              <div className="flex space-x-4">
-                <Skeleton className="h-4 w-8" />
-                <Skeleton className="h-4 w-8" />
-                <Skeleton className="h-4 w-8" />
-              </div>
-              <div className="flex space-x-4">
-                <Skeleton className="h-4 w-8" />
-                <Skeleton className="h-4 w-8" />
-              </div>
-            </div>
-          ))}
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+              <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+                  <tr>
+                      <th className="px-6 py-3 text-left"><Skeleton className="h-4 w-24" /></th>
+                      <th className="px-6 py-3 text-left"><Skeleton className="h-4 w-16" /></th>
+                      <th className="px-6 py-3 text-left"><Skeleton className="h-4 w-20" /></th>
+                      <th className="px-6 py-3 text-left"><Skeleton className="h-4 w-24" /></th>
+                      <th className="px-6 py-3 text-left"><Skeleton className="h-4 w-28" /></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {Array.from({ length: 6 }).map((_, i) => (
+                      <tr key={i} className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                          <td className="px-6 py-4"><Skeleton className="h-4 w-32" /></td>
+                          <td className="px-6 py-4"><Skeleton className="h-6 w-16 rounded-full" /></td>
+                          <td className="px-6 py-4"><Skeleton className="h-4 w-12" /></td>
+                          <td className="px-6 py-4"><Skeleton className="h-4 w-24" /></td>
+                          <td className="px-6 py-4"><Skeleton className="h-4 w-28" /></td>
+                      </tr>
+                  ))}
+              </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -176,28 +69,45 @@ function CampaignsTableSkeleton() {
 
 export function CampaignsList() {
   const [activeTab, setActiveTab] = useState("All Campaigns")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [inputValue, setInputValue] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState("")
 
-  const filteredCampaigns = mockCampaigns.filter((campaign) =>
-    campaign.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+  // Debouncing effect for the search input
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(inputValue);
+    }, 800); // 800ms delay
 
-  const handleCampaignClick = (campaignId: string, campaignName: string) => {
-    router.push(`/campaign/${campaignId}?name=${encodeURIComponent(campaignName)}`)
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputValue]);
+
+  // Tanstack Query to fetch campaign data
+  const { data: campaigns = [], isLoading, error } = useQuery<CampaignWithStats[]>({
+    queryKey: ['campaigns-stats', { search: debouncedSearch, status: activeTab }],
+    queryFn: fetchCampaignsWithStats,
+  });
+
+  const handleCampaignClick = (campaignId: number, campaignName: string) => {
+    // Using window.location for navigation to avoid router dependency issues.
+    window.location.href = `/campaign/${campaignName}?name=${encodeURIComponent(campaignName)}`;
   }
 
   if (isLoading) {
     return (
-      <div className="h-full flex flex-col space-y-6 overflow-hidden">
+      <div className="h-full flex flex-col space-y-6 overflow-hidden p-4 md:p-6">
         <CampaignsTableSkeleton />
       </div>
     )
   }
 
+  if (error) {
+      return <div className="p-6 text-center text-red-500">Failed to load campaigns.</div>
+  }
+
   return (
-    <div className="h-full flex flex-col space-y-6 overflow-hidden">
+    <div className="h-full flex flex-col space-y-6 overflow-hidden p-4 md:p-6">
       {/* Header */}
       <div className="flex items-center justify-between flex-shrink-0">
         <div>
@@ -213,7 +123,7 @@ export function CampaignsList() {
       {/* Tabs and Search */}
       <div className="flex items-center justify-between flex-shrink-0">
         <div className="flex space-x-1">
-          {["All Campaigns", "Active", "Inactive"].map((tab) => (
+          {["All Campaigns", "Active", "Paused", "Draft", "Completed"].map((tab) => (
             <Button
               key={tab}
               variant={activeTab === tab ? "default" : "ghost"}
@@ -232,8 +142,8 @@ export function CampaignsList() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
             placeholder="Search campaigns..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
             className="pl-10 w-80 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white"
           />
         </div>
@@ -255,15 +165,15 @@ export function CampaignsList() {
                   Total Leads
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Request Status
+                  Request Status (Dummy)
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Connection Status
+                  Connection Status (Dummy)
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {filteredCampaigns.map((campaign) => (
+              {campaigns.map((campaign) => (
                 <tr
                   key={campaign.id}
                   className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors"
@@ -290,32 +200,14 @@ export function CampaignsList() {
                       {campaign.totalLeads}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-4">
-                      <div className="flex items-center text-sm">
-                        <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                        <span className="text-gray-600 dark:text-gray-400">{campaign.requestSent}</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
-                        <span className="text-gray-600 dark:text-gray-400">{campaign.requestAccepted}</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                        <span className="text-gray-600 dark:text-gray-400">{campaign.requestReplied}</span>
-                      </div>
+                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">0</div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-4">
-                      <div className="flex items-center text-sm">
-                        <Users className="w-4 h-4 mr-1 text-blue-500" />
-                        <span className="text-gray-600 dark:text-gray-400">{campaign.connectionSent}</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <MessageSquare className="w-4 h-4 mr-1 text-purple-500" />
-                        <span className="text-gray-600 dark:text-gray-400">{campaign.connectionAccepted}</span>
-                      </div>
+                       <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">0</div>
                     </div>
                   </td>
                 </tr>
@@ -327,3 +219,4 @@ export function CampaignsList() {
     </div>
   )
 }
+
