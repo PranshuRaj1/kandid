@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -10,11 +10,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { ChevronDown, X, Clock, CheckCircle, AlertCircle, MessageSquare, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { LeadWithCampaign } from "@/db/schema"; // Import the detailed type
+import { LeadWithCampaign } from "@/db/schema"; // Ensure this path is correct
 
-// This function fetches leads from our API. It's used by TanStack Query.
+// The API fetching function remains the same.
 const fetchLeads = async ({ pageParam = 0, queryKey }: any) => {
   const [, { search }] = queryKey;
+  // The 'search' value used here will now be the debounced value.
   const res = await fetch(`/api/leads?offset=${pageParam}&limit=10&query=${search}`);
   if (!res.ok) {
     throw new Error('Network response was not ok');
@@ -160,12 +161,29 @@ const LeadProfileSidebar = ({
   );
 };
 
-
 export function LeadsPage() {
   const [selectedLead, setSelectedLead] = useState<LeadWithCampaign | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  // State for the input value, which updates instantly.
+  const [inputValue, setInputValue] = useState("");
+  // State for the debounced search term, which updates after a delay.
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const observer = useRef<IntersectionObserver | null>(null);
+
+  // useEffect hook to implement the debounce logic.
+  useEffect(() => {
+    // Set up a timer that will update the debounced search term after 1 second.
+    const handler = setTimeout(() => {
+      setDebouncedSearch(inputValue);
+    }, 800); // 800ms = 0.8 second delay
+
+    // This cleanup function is crucial. It runs every time the `inputValue` changes.
+    // It cancels the previous timer, so the search term is only updated
+    // when the user stops typing for 0.8 second.
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputValue]); // The effect re-runs whenever the user types into the input.
 
   const {
     data,
@@ -176,7 +194,9 @@ export function LeadsPage() {
     isLoading,
     status,
   } = useInfiniteQuery({
-    queryKey: ['leads', { search }],
+    // The queryKey now depends on the debounced search term.
+    // This ensures the query only re-runs when the debounced value changes.
+    queryKey: ['leads', { search: debouncedSearch }],
     queryFn: fetchLeads,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length ? allPages.length * 10 : undefined;
@@ -207,10 +227,6 @@ export function LeadsPage() {
     setSidebarOpen(false);
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearch(e.target.value);
-  }
-
   if (isLoading) {
     return <div className="p-4 sm:p-6 lg:p-8"><LeadsTableSkeleton /></div>;
   }
@@ -230,8 +246,10 @@ export function LeadsPage() {
                 <Input 
                     placeholder="Search leads..." 
                     className="pl-10 w-full max-w-sm"
-                    value={search}
-                    onChange={handleSearchChange}
+                    // The input's value is tied to the instant `inputValue` state.
+                    value={inputValue}
+                    // The onChange handler updates the `inputValue` state immediately.
+                    onChange={(e) => setInputValue(e.target.value)}
                 />
             </div>
         </div>
@@ -297,3 +315,4 @@ export function LeadsPage() {
     </div>
   );
 }
+
