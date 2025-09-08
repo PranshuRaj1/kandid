@@ -218,7 +218,7 @@ export function RecentActivityComponent() {
       </div>
 
       {/* Table headers */}
-      <div className="grid grid-cols-3 gap-4 pb-4 mb-4 border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
+      <div className="grid grid-cols-3 gap-4 pb-4 mb-4 border-b border-gray-100 text-sm dark:border-gray-700 flex-shrink-0">
         <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Lead</div>
         <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Campaign</div>
         <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Status</div>
@@ -228,9 +228,9 @@ export function RecentActivityComponent() {
       <div className="flex-1 overflow-y-auto">
         <div className="space-y-1">
           {mockActivities.map((activity) => (
-            <div key={activity.id} className="grid grid-cols-3 gap-4 items-center py-3">
+            <div key={activity.id} className="grid grid-cols-3 text-xs gap-4 items-center py-3">
               {/* Lead info */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center text-xs gap-3">
                 <Avatar className="h-10 w-10">
                   <AvatarImage src={activity.lead.avatar || "/placeholder.svg"} alt={activity.lead.name} />
                   <AvatarFallback className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
@@ -247,7 +247,7 @@ export function RecentActivityComponent() {
               </div>
 
               {/* Campaign */}
-              <div className="font-medium text-gray-900 dark:text-white">{activity.campaign}</div>
+              <div className="font-medium px-4 text-gray-900 dark:text-white">{activity.campaign}</div>
 
               {/* Status */}
               <div className="flex justify-end">{getStatusBadge(activity.status)}</div>

@@ -67,15 +67,15 @@ export function CampaignsComponent() {
   const getStatusBadgeColor = (status: CampaignStatus) => {
     switch (status) {
       case "Active":
-        return "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
+        return "bg-green-100 text-sm text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
       case "Draft":
-        return "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
+        return "bg-gray-100 text-sm text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
       case "Paused":
-        return "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800"
+        return "bg-yellow-100 text-sm text-yellow-700 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800"
       case "Completed":
-        return "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800"
+        return "bg-blue-100 text-sm text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800"
       default:
-        return "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
+        return "bg-gray-100 text-sm text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
     }
   }
 
@@ -102,13 +102,13 @@ export function CampaignsComponent() {
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       {/* Header with dropdown */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-medium text-gray-900 dark:text-white">Campaigns</h1>
+        <h1 className="text-sm font-medium text-gray-900 dark:text-white">Campaigns</h1>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="min-w-[160px] justify-between text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 bg-transparent dark:bg-transparent"
+              className="min-w-[80px] justify-between text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 bg-transparent dark:bg-transparent"
             >
               {selectedCampaign}
               <ChevronDown className="h-4 w-4 opacity-50" />
@@ -144,7 +144,7 @@ export function CampaignsComponent() {
         {filteredCampaigns.map((campaign) => (
           <div
             key={campaign.id}
-            className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+            className="flex items-center text-sm justify-between py-3 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
           >
             <div className="font-medium text-gray-900 dark:text-white">{campaign.name}</div>
             <div

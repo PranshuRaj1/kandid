@@ -90,17 +90,17 @@ export function LinkedInAccountsComponent() {
       <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-6">LinkedIn Accounts</h2>
 
       {/* Table headers */}
-      <div className="grid grid-cols-3 gap-4 pb-4 mb-4 border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
-        <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Account</div>
-        <div className="text-sm font-medium text-gray-500 dark:text-gray-400 text-center">Status</div>
-        <div className="text-sm font-medium text-gray-500 dark:text-gray-400 text-right">Requests</div>
+      <div className="grid grid-cols-3 gap-4 pb-4 mb-4 text-xs border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
+        <div className=" font-medium text-gray-500 dark:text-gray-400">Account</div>
+        <div className=" font-medium text-gray-500 dark:text-gray-400 text-center px-25 ">Status</div>
+        <div className=" font-medium text-gray-500 dark:text-gray-400 text-right">Requests</div>
       </div>
 
       {/* Account list */}
       <div className="flex-1 overflow-y-auto">
         <div className="space-y-1">
           {mockLinkedInAccounts.map((account) => (
-            <div key={account.id} className="grid grid-cols-3 gap-4 items-center py-3">
+            <div key={account.id} className="grid grid-cols-3 gap-4 text-xs items-center py-3">
               {/* Account info */}
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
@@ -119,13 +119,13 @@ export function LinkedInAccountsComponent() {
                       <span className="text-white text-xs font-bold">in</span>
                     </div>
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{account.email}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{account.email}</div>
                 </div>
               </div>
 
               {/* Status */}
-              <div className="flex justify-center">
-                <div className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+              <div className="flex justify-center text-xs px-30">
+                <div className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                   <div className="w-3 h-3 bg-white rounded-full flex items-center justify-center">
                     <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
                   </div>
@@ -134,11 +134,11 @@ export function LinkedInAccountsComponent() {
               </div>
 
               {/* Requests progress */}
-              <div className="flex items-center justify-end gap-3">
-                <div className="flex-1 max-w-[100px]">
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div className="flex items-center justify-end gap-1">
+                <div className="flex-1 max-w-[10px]">
+                  <div className=" bg-gray-200 dark:bg-gray-700 rounded-full ">
                     <div
-                      className="bg-blue-600 h-2 rounded-full"
+                      className="bg-blue-600 rounded-full"
                       style={{ width: `${(account.requests.current / account.requests.total) * 100}%` }}
                     ></div>
                   </div>

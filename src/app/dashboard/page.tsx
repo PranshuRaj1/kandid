@@ -4,11 +4,11 @@ import { RecentActivityComponent } from "@/components/recent-activity-card"
 
 export default function Dashboard() {
   return (
-    <div className="h-full bg-gray-50 dark:bg-gray-900 p-6">
-      <div className="max-w-7xl mx-auto h-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+    <div className="h-full bg-gray-50 dark:bg-gray-900 p-6 pt-2">
+      <div className="max-w-6xl mx-auto h-1/2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 h-1/2">
           {/* Left column - Campaigns and LinkedIn Accounts */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-3">
             <div className="flex-shrink-0">
               <CampaignsComponent />
             </div>
