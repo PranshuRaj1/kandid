@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useState } from "react"
 
-// Mock LinkedIn accounts data
+// Mock LinkedIn accounts data (updated with more entries for scrolling)
 const mockLinkedInAccounts = [
   {
     id: 1,
@@ -37,6 +37,22 @@ const mockLinkedInAccounts = [
     avatar: "/professional-woman-headshot.png",
     status: "Connected",
     requests: { current: 18, total: 100 },
+  },
+  {
+    id: 5,
+    name: "Alex Johnson",
+    email: "alex.j@example.com",
+    avatar: "/professional-man-headshot.png",
+    status: "Connected",
+    requests: { current: 50, total: 100 },
+  },
+  {
+    id: 6,
+    name: "Samantha Lee",
+    email: "sam.lee@example.com",
+    avatar: "/professional-woman-headshot.png",
+    status: "Connected",
+    requests: { current: 25, total: 30 },
   },
 ]
 
@@ -85,7 +101,7 @@ export function LinkedInAccountsComponent() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 h-full flex flex-col">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6  flex flex-col">
       {/* Header */}
       <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-6">LinkedIn Accounts</h2>
 
@@ -96,8 +112,8 @@ export function LinkedInAccountsComponent() {
         <div className=" font-medium text-gray-500 dark:text-gray-400 text-right">Requests</div>
       </div>
 
-      {/* Account list */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Account list (MODIFIED) */}
+      <div className="overflow-y-auto max-h-[16.75rem]">
         <div className="space-y-1">
           {mockLinkedInAccounts.map((account) => (
             <div key={account.id} className="grid grid-cols-3 gap-4 text-xs items-center py-3">

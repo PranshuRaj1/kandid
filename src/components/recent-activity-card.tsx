@@ -169,14 +169,14 @@ export function RecentActivityComponent() {
 
   if (isLoading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 h-full">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 ">
         <RecentActivitySkeleton />
       </div>
     )
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 h-full flex flex-col">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6  flex flex-col">
       {/* Header with dropdown */}
       <div className="flex items-center justify-between mb-6 flex-shrink-0">
         <h2 className="text-xl font-medium text-gray-900 dark:text-white">Recent Activity</h2>
@@ -224,8 +224,8 @@ export function RecentActivityComponent() {
         <div className="text-sm font-medium text-gray-500 dark:text-gray-400">Status</div>
       </div>
 
-      {/* Activity list */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Activity list (MODIFIED) */}
+      <div className="overflow-y-auto max-h-[39.5rem]">
         <div className="space-y-1">
           {mockActivities.map((activity) => (
             <div key={activity.id} className="grid grid-cols-3 text-xs gap-4 items-center py-3">
