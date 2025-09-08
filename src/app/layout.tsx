@@ -3,8 +3,6 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { LayoutWrapper } from "@/components/sidebar-wrapper"
-import { CustomBreadcrumb } from "@/components/breadcrumb-wrapper"
-import App from "next/app"
 import { AppHeader } from "@/components/AppHeader"
 import { Providers } from "@/provider"
 

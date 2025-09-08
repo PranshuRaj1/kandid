@@ -14,12 +14,16 @@ import { useSidebarStore } from "@/lib/store/sidebar-store"
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react"
 import { Button } from "./ui/button"
 
+
 export function AppHeader() {
   const pathname = usePathname()
   const pathSegments = pathname.split("/").filter((segment) => segment)
   const { isOpen, toggle } = useSidebarStore()
 
-  return (
+  const doWeRender = pathname !== "/login";
+
+  if(doWeRender) {
+    return (
     <header className="flex items-center p-2  flex-shrink-0">
       {/* 1. Always-visible toggle button */}
       <Button variant="ghost" size="sm" onClick={toggle} className="mr-2" aria-label="Toggle sidebar">
@@ -57,4 +61,7 @@ export function AppHeader() {
       </Breadcrumb>
     </header>
   )
+  }
+
+  
 }
