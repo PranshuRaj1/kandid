@@ -1,6 +1,6 @@
-# Next.js + Better-Auth + Drizzle: Authentication Boilerplate
+# Kandid
 
-This project also serves as a full-stack replication of the Leads and Campaigns sections of the [Linkbird.ai](http://Linkbird.ai) platform, built for the Kandid Full Stack Developer internship assignment.
+This project serves as a full-stack replication of the Leads and Campaigns sections of the [Linkbird.ai](http://Linkbird.ai) platform, built for the Kandid Full Stack Developer internship assignment.
 
 ## 🚀 Features Implemented
 
