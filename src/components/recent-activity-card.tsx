@@ -145,11 +145,11 @@ export const RecentActivityComponent = memo(function RecentActivityComponent() {
   const [activities, setActivities] = useState<Activity[]>([])
 
   useEffect(() => {
-    // Simulate a network request to fetch data
+    // Simulate a network request to fetch data currently using a timeout
     const timer = setTimeout(() => {
       setActivities(mockActivities)
       setIsLoading(false)
-    }, 2000) // 2-second delay
+    }, 0)
 
     // Cleanup function to clear the timer if the component unmounts
     return () => clearTimeout(timer)
@@ -160,9 +160,13 @@ export const RecentActivityComponent = memo(function RecentActivityComponent() {
   const sortedActivities = useMemo(() => {
     const sorted = [...activities]; // Create a copy to avoid mutating state
     if (sortBy === "Oldest First") {
+      console.log("oldest first sorted done");
       return sorted.reverse(); // A simple reverse for this example
+
+      
     }
     if (sortBy === "By Campaign") {
+            console.log("By campaign sorted done");
       return sorted.sort((a, b) => a.campaign.localeCompare(b.campaign));
     }
     // Default is "Most Recent"
