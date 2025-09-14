@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useInfiniteQuery, QueryFunctionContext } from "@tanstack/react-query";
+import { useInfiniteQuery, QueryFunctionContext,InfiniteData } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -199,16 +199,22 @@ export function LeadsPage() {
     isFetchingNextPage,
     isLoading,
     status,
-  } = useInfiniteQuery({
+  } = useInfiniteQuery<LeadWithCampaign[],Error,InfiniteData<LeadWithCampaign[]>,LeadsQueryKey> ({
+    /*
+      The data returned by useInfiniteQuery isn't just the array; 
+      it's a special object wrapper: { pages: [...], pageParams: [...] }
+     */
+
     // The queryKey now depends on the debounced search term.
     // This ensures the query only re-runs when the debounced value changes.
     queryKey: ['leads', { search: debouncedSearch }],
-    // @ts-expect-error currently not sure why ts is complaining here
+    
     queryFn: fetchLeads,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length ? allPages.length * 10 : undefined;
     },
     initialPageParam: 0,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const lastElementRef = useCallback(
