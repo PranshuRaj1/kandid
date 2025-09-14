@@ -13,7 +13,7 @@ import type { CampaignWithStats } from "@/db/schema"
 // Define a type alias for the query key for better readability.
 type CampaignsQueryKey = [string, { search: string; status: string }];
 
-// This function fetches campaigns with stats from our new API endpoint.
+// This function fetches campaigns with stats from API endpoint.
 const fetchCampaignsWithStats = async ({ 
     queryKey 
 }: QueryFunctionContext<CampaignsQueryKey>): Promise<CampaignWithStats[]> => {
@@ -91,15 +91,17 @@ export function CampaignsList() {
   }, [inputValue]);
 
   // Tanstack Query to fetch campaign data
-  const { data: campaigns = [], isLoading, error } = useQuery<CampaignWithStats[]>({
+
+  //The full signature is: useQuery<TQueryFnData, TError, TData, TQueryKey>
+  const { data: campaigns = [], isLoading, error } = useQuery<CampaignWithStats[],Error,CampaignWithStats[],CampaignsQueryKey>({
     queryKey: ['campaigns-stats', { search: debouncedSearch, status: activeTab }],
-    // @ts-expect-error currently not sure why ts is complaining here
+    
     queryFn: fetchCampaignsWithStats,
     initialData: [], 
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const handleCampaignClick = (campaignId: number, campaignName: string) => {
-    // Using the Next.js router for client-side navigation
     router.push(`/campaign/${campaignId}?name=${encodeURIComponent(campaignName)}`);
   }
 
@@ -184,7 +186,6 @@ export function CampaignsList() {
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               
               { 
-              // @ts-expect-error currently not sure why ts is complaining here
               campaigns.map((campaign) => (
                 <tr
                   key={campaign.id}

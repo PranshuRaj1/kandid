@@ -160,13 +160,13 @@ export const RecentActivityComponent = memo(function RecentActivityComponent() {
   const sortedActivities = useMemo(() => {
     const sorted = [...activities]; // Create a copy to avoid mutating state
     if (sortBy === "Oldest First") {
-      console.log("oldest first sorted done");
+     
       return sorted.reverse(); // A simple reverse for this example
 
       
     }
     if (sortBy === "By Campaign") {
-            console.log("By campaign sorted done");
+            
       return sorted.sort((a, b) => a.campaign.localeCompare(b.campaign));
     }
     // Default is "Most Recent"

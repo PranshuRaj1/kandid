@@ -50,16 +50,17 @@ export const CampaignsComponent = memo(function CampaignsComponent(){
   });
 
   // Filtering logic remains the same, but now uses data from useQuery.
-  // 2. Memoize the filtered list with useMemo.
   // This calculation now only runs when `campaigns` or `selectedCampaign` changes.
   const filteredCampaigns = useMemo(() => {
     if (selectedCampaign === "All Campaigns") {
+
       return campaigns;
     }
+    
     return campaigns.filter((campaign) => campaign.name === selectedCampaign);
   }, [campaigns, selectedCampaign]);
 
-  // 3. Memoize event handlers with useCallback to prevent re-creation.
+  //  Memoize event handlers with useCallback to prevent re-creation.
   const handleCampaignSelect = useCallback((name: string) => {
     setSelectedCampaign(name);
   }, []);

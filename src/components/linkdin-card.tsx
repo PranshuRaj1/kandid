@@ -103,16 +103,16 @@ function LinkedInAccountSkeleton() {
 }
 
 export const LinkedInAccountsComponent = memo(function LinkedInAccountsComponent() {
-  // 2. Initialize isLoading to true and create a state for the accounts
+  // Initialize isLoading to true and create a state for the accounts
   const [isLoading, setIsLoading] = useState(true)
   const [accounts, setAccounts] = useState<LinkedInAccount[]>([])
 
-  // 3. Use useEffect to simulate fetching data when the component mounts
+  // Use useEffect to simulate fetching data when the component mounts because currently there is no API
   useEffect(() => {
     const timer = setTimeout(() => {
       setAccounts(mockLinkedInAccounts) // Load data into state
       setIsLoading(false) // <-- This is where setIsLoading is now used
-    }, 1500) // Simulate a 1.5-second delay
+    }, 1000) // Simulate a 1-second delay
 
     // Cleanup function to clear the timer if the component unmounts
     return () => clearTimeout(timer)
